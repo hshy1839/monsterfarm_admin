@@ -5,7 +5,7 @@ import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 
 const Survey = () => {
-    const [products, setProducts] = useState([]);
+    const [surveys, setSurveys] = useState([]);
     const [searchTerm, setSearchTerm] = useState('');
     const [searchCategory, setSearchCategory] = useState('all');
     const [currentPage, setCurrentPage] = useState(1);
@@ -13,43 +13,46 @@ const Survey = () => {
 
     const navigate = useNavigate();
 
-    const fetchProducts = async () => {
+    const fetchSurveys = async () => {
         try {
             const token = localStorage.getItem('token');
             if (!token) {
                 console.log('로그인 정보가 없습니다.');
                 return;
             }
-
-            const response = await axios.get('http:///localhost:7777/api/products/allProduct', {
+    
+            const response = await axios.get('http://localhost:7777/api/survey', {
                 headers: {
                     Authorization: `Bearer ${token}`,
                 },
             });
-
-            if (response.data.success && Array.isArray(response.data.products)) {
-                // 최근에 만든 상품이 맨 위에 오도록 날짜순으로 정렬
-                const sortedProducts = response.data.products.sort((a, b) => {
-                    // createdAt 필드가 있다고 가정하고, 최신 상품이 먼저 오도록 정렬
+    
+            console.log("서버 응답 데이터:", response.data); // ✅ 응답 데이터 확인
+    
+            // surveys -> survey (올바른 키 값으로 수정)
+            if (response.data.success && Array.isArray(response.data.survey)) {
+                const sortedSurveys = response.data.survey.sort((a, b) => {
                     return new Date(b.createdAt) - new Date(a.createdAt);
                 });
-
-                setProducts(sortedProducts);
+    
+                setSurveys(sortedSurveys);
             } else {
+                console.error('서버 응답이 예상과 다릅니다:', response.data);
             }
         } catch (error) {
-            console.error('상품 정보를 가져오는데 실패했습니다.', error);
+            console.error('설문 정보를 가져오는데 실패했습니다.', error);
         }
     };
-
+    
+    
 
     useEffect(() => {
-        fetchProducts();
+        fetchSurveys();
     }, []);
 
     const handleSearch = async () => {
         if (searchTerm === '') {
-            fetchProducts();  // 검색어가 없으면 전체 제품을 다시 불러옵니다.
+            fetchSurveys();
         } else {
             try {
                 const token = localStorage.getItem('token');
@@ -58,56 +61,44 @@ const Survey = () => {
                     return;
                 }
 
-                const response = await axios.get('http:///localhost:7777/api/products/allProduct', {
+                const response = await axios.get('http://localhost:7777/api/survey', {
                     headers: {
                         Authorization: `Bearer ${token}`,
                     },
                 });
 
-                if (response.data.success && Array.isArray(response.data.products)) {
-                    let filteredProducts = response.data.products;
+                if (response.data.success && Array.isArray(response.data.surveys)) {
+                    let filteredSurveys = response.data.surveys;
 
-                    // 검색 조건에 맞게 필터링
-                    filteredProducts = filteredProducts.filter((product) => {
+                    filteredSurveys = filteredSurveys.filter((survey) => {
                         if (searchCategory === 'all') {
-                            return (
-                                product.name.includes(searchTerm) ||
-                                (product.category.main.includes(searchTerm) || product.category.sub.includes(searchTerm))
-                            );
+                            return survey.name.includes(searchTerm) || survey.type.includes(searchTerm);
                         } else if (searchCategory === 'name') {
-                            return product.name.includes(searchTerm);
-                        } else if (searchCategory === 'category') {
-                            return (
-                                product.category.main.includes(searchTerm) || product.category.sub.includes(searchTerm)
-                            );
+                            return survey.name.includes(searchTerm);
+                        } else if (searchCategory === 'type') {
+                            return survey.type.includes(searchTerm);
                         }
                         return true;
                     });
 
-                    setProducts(filteredProducts); // 필터된 제품을 상태에 반영
+                    setSurveys(filteredSurveys);
                 } else {
                     console.error('올바르지 않은 데이터 형식:', response.data);
                 }
             } catch (error) {
-                console.error('상품 정보를 가져오는데 실패했습니다.', error);
+                console.error('설문 정보를 가져오는데 실패했습니다.', error);
             }
         }
     };
 
-
-    const getCategoryDisplay = (category) => {
-        if (!category) return 'Unknown Category';
-        return `${category}`;
+    const handleSurveyClick = (id) => {
+        navigate(`/survey/detail/${id}`);
     };
 
-    const handleProductClick = (id) => {
-        navigate(`/products/productDetail/${id}`);
-    };
-
-    const indexOfLastProduct = currentPage * itemsPerPage;
-    const indexOfFirstProduct = indexOfLastProduct - itemsPerPage;
-    const currentProducts = products.slice(indexOfFirstProduct, indexOfLastProduct);
-    const totalPages = Math.ceil(products.length / itemsPerPage);
+    const indexOfLastSurvey = currentPage * itemsPerPage;
+    const indexOfFirstSurvey = indexOfLastSurvey - itemsPerPage;
+    const currentSurveys = surveys.slice(indexOfFirstSurvey, indexOfLastSurvey);
+    const totalPages = Math.ceil(surveys.length / itemsPerPage);
 
     const handlePreviousPage = () => {
         if (currentPage > 1) setCurrentPage(currentPage - 1);
@@ -121,29 +112,9 @@ const Survey = () => {
         setCurrentPage(pageNumber);
     };
 
-    const calculateTotalStock = (product) => {
-        let totalStock = 0;
-        if (product.sizeStock) {
-            Object.values(product.sizeStock).forEach(stock => {
-                if (stock > 0) {
-                    totalStock += stock;
-                }
-            });
-        }
-        return totalStock;
-    };
-
     const handleWriteClick = () => {
-        navigate('/products/productCreate');
+        navigate('/survey/create');
     };
-
-    const formatPrice = (price) => {
-        return new Intl.NumberFormat('ko-KR', {
-            style: 'decimal', // 'currency'로 변경하고 currency: 'KRW' 추가 가능
-            maximumFractionDigits: 0, // 소수점 이하 자릿수
-        }).format(price);
-    };
-    
 
     return (
         <div className="product-management-container">
@@ -159,7 +130,7 @@ const Survey = () => {
                         >
                             <option value="all">전체</option>
                             <option value="name">설문 이름</option>
-                            <option value="category">유형</option>
+                            <option value="type">유형</option>
                         </select>
                         <input
                             type="text"
@@ -178,46 +149,28 @@ const Survey = () => {
                                 <th>번호</th>
                                 <th>설문 이름</th>
                                 <th>유형</th>
-                                {/* <th>사이즈</th> */}
-                                {/* <th>총 재고</th> */}
-                                <th>가격</th>
+                                <th>생성 날짜</th>
                             </tr>
                         </thead>
                         <tbody>
-                            {currentProducts.length > 0 ? (
-                                currentProducts.map((product, index) => (
-                                    <tr key={product._id}>
+                            {currentSurveys.length > 0 ? (
+                                currentSurveys.map((survey, index) => (
+                                    <tr key={survey._id}>
                                         <td>{index + 1 + (currentPage - 1) * itemsPerPage}</td>
                                         <td
-                                            onClick={() => handleProductClick(product._id)}
+                                            onClick={() => handleSurveyClick(survey._id)}
                                             className='product-title'
                                         >
-                                            {product.name || 'Unknown Survey'}
+                                            {survey.name || 'Unknown Survey'}
                                         </td>
-                                        <td>{getCategoryDisplay(product.category)}</td>
+                                        <td>{survey.type || 'Unknown Type'}</td>
+                                        <td>{new Date(survey.createdAt).toISOString().split('T')[0] || 'Unknown date'}</td>
 
-                                        {/* <td>
-                                            {product.sizeStock ? (
-                                                <div className="size-stock">
-                                                    {Object.keys(product.sizeStock).map((size) => (
-                                                        product.sizeStock[size] > 0 && (
-                                                            <div key={size} className="size-item">
-                                                                {size}
-                                                            </div>
-                                                        )
-                                                    ))}
-                                                </div>
-                                            ) : (
-                                                'Unknown Size'
-                                            )}
-                                        </td>
-                                        <td>{calculateTotalStock(product)}</td> */}
-                                        <td>{formatPrice(product.price || 0)} 원</td>
                                     </tr>
                                 ))
                             ) : (
                                 <tr>
-                                    <td colSpan="7" className="no-results">
+                                    <td colSpan="3" className="no-results">
                                         데이터가 없습니다.
                                     </td>
                                 </tr>

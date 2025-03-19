@@ -19,7 +19,7 @@ const SurveyDetail = () => {
                 }
 
                 const response = await axios.get(
-                    `http://localhost:7777/api/products/Survey/${id}`,
+                    `http://localhost:7777/api/survey/${id}`,
                     {
                         headers: {
                             Authorization: `Bearer ${token}`,
@@ -60,7 +60,7 @@ const SurveyDetail = () => {
             }
 
             const response = await axios.delete(
-                `http://localhost:7777/api/products/delete/${id}`, // URL 수정
+                `http://localhost:7777/api/survey/${id}`, // URL 수정
                 {
                     headers: {
                         Authorization: `Bearer ${token}`,

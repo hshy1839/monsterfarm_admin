@@ -28,7 +28,7 @@ const SurveyUpdate = () => {
                 }
 
                 const response = await axios.get(
-                    `http://localhost:7777/api/products/Survey/${id}`,
+                    `http://localhost:7777/api/survey/${id}`,
                     {
                         headers: {
                             Authorization: `Bearer ${token}`,
@@ -88,7 +88,7 @@ const SurveyUpdate = () => {
             }
 
             const response = await axios.put(
-                `http://localhost:7777/api/products/update/${id}`,
+                `http://localhost:7777/api/survey/${id}`,
                 updatedProduct,
                 {
                     headers: {
