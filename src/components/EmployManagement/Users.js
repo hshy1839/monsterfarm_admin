@@ -22,7 +22,7 @@ const Users = () => {
                     return;
                 }
 
-                const response = await axios.get('http://3.36.74.8:8865/api/users/userinfo', {
+                const response = await axios.get('http://localhost:7777/api/users/userinfo', {
                     headers: {
                         Authorization: `Bearer ${token}`,
                     },
@@ -55,7 +55,7 @@ const Users = () => {
                 const token = localStorage.getItem('token');
                 if (!token) return;
 
-                const response = await axios.get('http://3.36.74.8:8865/api/users/userinfoget', {
+                const response = await axios.get('http://localhost:7777/api/users/userinfoget', {
                     headers: {
                         Authorization: `Bearer ${token}`,
                     },
@@ -86,7 +86,7 @@ const Users = () => {
                 return null;
             }
 
-            const response = await axios.get(`http://3.36.74.8:8865/api/shippinginfo/${userId}`, {
+            const response = await axios.get(`http://localhost:7777/api/shippinginfo/${userId}`, {
                 headers: {
                     Authorization: `Bearer ${token}`,
                 },
@@ -153,7 +153,7 @@ const Users = () => {
             return;
         }
 
-        let url = `http://3.36.74.8:8865/api/users/userinfo/${id}`;
+        let url = `http://localhost:7777/api/users/userinfo/${id}`;
         let method = 'put';
         let data = {};
         let message = '';

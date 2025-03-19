@@ -2,9 +2,9 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { useParams, useNavigate } from 'react-router-dom';
 import Header from '../Header';
-import '../../css/ProductManagement/ProductUpdate.css';
+import '../../css/SurveyManagement/SurveyUpdate.css';
 
-const ProductUpdate = () => {
+const SurveyUpdate = () => {
     const [product, setProduct] = useState(null);
     const [updatedProduct, setUpdatedProduct] = useState({
         name: '',
@@ -28,7 +28,7 @@ const ProductUpdate = () => {
                 }
 
                 const response = await axios.get(
-                    `http://3.36.74.8:8865/api/products/Product/${id}`,
+                    `http://localhost:7777/api/products/Survey/${id}`,
                     {
                         headers: {
                             Authorization: `Bearer ${token}`,
@@ -88,7 +88,7 @@ const ProductUpdate = () => {
             }
 
             const response = await axios.put(
-                `http://3.36.74.8:8865/api/products/update/${id}`,
+                `http://localhost:7777/api/products/update/${id}`,
                 updatedProduct,
                 {
                     headers: {
@@ -116,7 +116,7 @@ const ProductUpdate = () => {
         <div className="product-update-container">
             <h2 className="product-update-title">상품 수정</h2>
             <form className="product-update-form" onSubmit={handleSave}>
-                {/* Product Name */}
+                {/* Survey Name */}
                 <div className="product-update-field">
                     <label className="product-update-label" htmlFor="name">상품 이름</label>
                     <input
@@ -208,4 +208,4 @@ const ProductUpdate = () => {
     );
 };
 
-export default ProductUpdate;
+export default SurveyUpdate;

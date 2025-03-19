@@ -2,15 +2,15 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { useParams, useNavigate } from 'react-router-dom';
 import Header from '../Header';
-import '../../css/ProductManagement/ProductDetail.css'; // 스타일 시트 경로 수정
+import '../../css/SurveyManagement/SurveyDetail.css'; // 스타일 시트 경로 수정
 
-const ProductDetail = () => {
+const SurveyDetail = () => {
     const [product, setProduct] = useState(null); // 상품 상세 정보 상태
     const { id } = useParams(); // URL에서 상품 ID를 가져옴
     const navigate = useNavigate(); // 페이지 이동을 위한 useNavigate 훅
 
     useEffect(() => {
-        const fetchProductDetail = async () => {
+        const fetchSurveyDetail = async () => {
             try {
                 const token = localStorage.getItem('token');
                 if (!token) {
@@ -19,7 +19,7 @@ const ProductDetail = () => {
                 }
 
                 const response = await axios.get(
-                    `http://3.36.74.8:8865/api/products/Product/${id}`,
+                    `http://localhost:7777/api/products/Survey/${id}`,
                     {
                         headers: {
                             Authorization: `Bearer ${token}`,
@@ -37,12 +37,12 @@ const ProductDetail = () => {
             }
         };
 
-        fetchProductDetail();
+        fetchSurveyDetail();
     }, [id]);
 
     // 수정 버튼 클릭 핸들러
     const handleEdit = () => {
-        navigate(`/products/productDetail/${id}/update`); // 수정 페이지로 이동
+        navigate(`/products/SurveyDetail/${id}/update`); // 수정 페이지로 이동
     };
 
     // 삭제 버튼 클릭 핸들러
@@ -60,7 +60,7 @@ const ProductDetail = () => {
             }
 
             const response = await axios.delete(
-                `http://3.36.74.8:8865/api/products/delete/${id}`, // URL 수정
+                `http://localhost:7777/api/products/delete/${id}`, // URL 수정
                 {
                     headers: {
                         Authorization: `Bearer ${token}`,
@@ -131,4 +131,4 @@ const ProductDetail = () => {
     );
 };
 
-export default ProductDetail;
+export default SurveyDetail;

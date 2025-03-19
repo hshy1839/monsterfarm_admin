@@ -16,7 +16,7 @@ const Main = () => {
           return;  // 토큰이 없으면 요청을 보내지 않음
         }
     
-        const response = await axios.get('http://3.36.74.8:8865/api/users/userinfo', {
+        const response = await axios.get('http://localhost:7777/api/users/userinfo', {
           headers: {
             Authorization: `Bearer ${token}`,
           },
@@ -39,7 +39,7 @@ const Main = () => {
     const fetchTotalProductsCount = async () => {
       try {
         const token = localStorage.getItem('token');
-        const response = await axios.get('http://3.36.74.8:8865/api/products/allProduct', {
+        const response = await axios.get('http://localhost:7777/api/products/allProduct', {
           headers: {
             Authorization: `Bearer ${token}`,
           },
@@ -61,7 +61,7 @@ const Main = () => {
   //   const fetchActiveCouponsCount = async () => {
   //     try {
   //       const token = localStorage.getItem('token');
-  //       const response = await axios.get('http://3.36.74.8:8865/api/coupons', {
+  //       const response = await axios.get('http://localhost:7777/api/coupons', {
   //         headers: {
   //           Authorization: `Bearer ${token}`,
   //         },
@@ -83,7 +83,7 @@ const Main = () => {
   return (
     <div className="main-container">
       <div className='main-container-header'>
-      <h1>Alice <br />관리자 페이지</h1>
+      <h1>몬스터팜 <br />관리자 페이지</h1>
       </div>
       <div className="main-container-container">
         <div className="main-section1">

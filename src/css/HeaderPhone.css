@@ -14,7 +14,7 @@ a {
     overflow-x: hidden;
     z-index: 100;
     color: black;
-    background-color: #6B4EFF;
+    background-color: #4b5767;
     padding-top: 2%;
   }
   
@@ -120,7 +120,7 @@ a {
     position: relative;
     top: 0;
     left: 0;
-    background-color: #513bbe;
+    background-color: #31cbb9;
     width: 90%;
     padding: 10px 0;
     border-radius: 5px;

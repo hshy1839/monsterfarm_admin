@@ -1,10 +1,10 @@
 import React, { useState, useEffect } from 'react';
-import '../../css/ProductManagement/Product.css';
+import '../../css/SurveyManagement/Survey.css';
 import Header from '../Header.js';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 
-const Product = () => {
+const Survey = () => {
     const [products, setProducts] = useState([]);
     const [searchTerm, setSearchTerm] = useState('');
     const [searchCategory, setSearchCategory] = useState('all');
@@ -21,7 +21,7 @@ const Product = () => {
                 return;
             }
 
-            const response = await axios.get('http:///3.36.74.8:8865/api/products/allProduct', {
+            const response = await axios.get('http:///localhost:7777/api/products/allProduct', {
                 headers: {
                     Authorization: `Bearer ${token}`,
                 },
@@ -58,7 +58,7 @@ const Product = () => {
                     return;
                 }
 
-                const response = await axios.get('http:///3.36.74.8:8865/api/products/allProduct', {
+                const response = await axios.get('http:///localhost:7777/api/products/allProduct', {
                     headers: {
                         Authorization: `Bearer ${token}`,
                     },
@@ -150,7 +150,7 @@ const Product = () => {
             <Header />
             <div className="product-management-container-container">
                 <div className="product-top-container-container">
-                    <h1>상품 관리</h1>
+                    <h1>설문조사 관리</h1>
                     <div className="product-search-box">
                         <select
                             className="search-category"
@@ -158,8 +158,8 @@ const Product = () => {
                             onChange={(e) => setSearchCategory(e.target.value)}
                         >
                             <option value="all">전체</option>
-                            <option value="name">상품 이름</option>
-                            <option value="category">카테고리</option>
+                            <option value="name">설문 이름</option>
+                            <option value="category">유형</option>
                         </select>
                         <input
                             type="text"
@@ -176,8 +176,8 @@ const Product = () => {
                         <thead>
                             <tr>
                                 <th>번호</th>
-                                <th>상품 이름</th>
-                                <th>카테고리</th>
+                                <th>설문 이름</th>
+                                <th>유형</th>
                                 {/* <th>사이즈</th> */}
                                 {/* <th>총 재고</th> */}
                                 <th>가격</th>
@@ -192,7 +192,7 @@ const Product = () => {
                                             onClick={() => handleProductClick(product._id)}
                                             className='product-title'
                                         >
-                                            {product.name || 'Unknown Product'}
+                                            {product.name || 'Unknown Survey'}
                                         </td>
                                         <td>{getCategoryDisplay(product.category)}</td>
 
@@ -246,7 +246,7 @@ const Product = () => {
                 </div>
                 <div className="write-btn-container">
                     <button className="write-btn" onClick={handleWriteClick}>
-                        상품등록
+                        설문추가
                     </button>
                 </div>
             </div>
@@ -254,4 +254,4 @@ const Product = () => {
     );
 };
 
-export default Product;
+export default Survey;

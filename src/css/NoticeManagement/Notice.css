@@ -57,7 +57,7 @@ h1 {
   padding: 10px;
   font-size: 16px;
   border: 1px solid #ccc;
-  background-color: #6B4EFF;
+  background-color: #4b5767;
   color: white;
   font-weight: 900;
   border-left: none;
@@ -103,7 +103,7 @@ h1 {
 }
 
 .notice-table th {
-  background-color: #6B4EFF;
+  background-color: #4b5767;
   font-weight: bold;
   font-size: 1rem;
   color: white;

@@ -14,7 +14,7 @@ a {
   overflow-y: hidden;
   z-index: 100;
   color: black;
-  background-color: #6B4EFF;
+  background-color: #4b5767;
   padding-top: 2%;
 }
 
@@ -120,7 +120,7 @@ a {
   position: relative;
   top: 0;
   left: 0;
-  background-color: #513bbe;
+  background-color: #31cbb9;
   width: 90%;
   padding: 10px 0;
   border-radius: 5px;
@@ -141,6 +141,8 @@ a {
 .submenu-item-employee {
   display: block;
   padding: 10px 20px;
+  font-weight: 900;
+
   color: rgb(221, 221, 221);
   text-decoration: none;
   font-size: 0.9rem;
@@ -183,7 +185,7 @@ a {
   position: fixed;
   bottom: 5%;
   left: 1%;
-  background-color: #6B4EFF;
+  background-color: #4b5767;
   font-size: 24px;
   padding: 20px;
   border-radius: 50%;
@@ -207,7 +209,7 @@ a {
     position: fixed;
     bottom: 5%;
     left: 1%;
-    background-color: #6B4EFF;
+    background-color: #4b5767;
     font-size: 24px;
     padding: 20px;
     border-radius: 50%;
