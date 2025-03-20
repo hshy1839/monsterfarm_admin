@@ -52,8 +52,10 @@ function App() {
         <Route path="/notice/noticeCreate" element={<><Header /><NoticeCreate /></>} />
         <Route path="/notice/noticeDetail/:id" element={<NoticeDetail />} />
         <Route path="/login" element={<Login />} />
-        <Route path="/products" element={<><Header /><Survey /></>} />
-        <Route path="/products/productCreate" element={<><Header /><SurveyCreate /></>} />
+        <Route path="/survey" element={<><Header /><Survey /></>} />
+        <Route path="/survey/create" element={<><Header /><SurveyCreate /></>} />
+        <Route path="/survey/detail/:id" element={<><Header /><SurveyDetail /></>} />
+        <Route path="/survey/detail/:id/update" element={<><Header /><SurveyUpdate /></>} />
         <Route path="/setting" element={<><Header /><Setting /></>} />
       </Routes>
       )}

@@ -2,11 +2,11 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { useParams, useNavigate } from 'react-router-dom';
 import Header from '../Header';
-import '../../css/SurveyManagement/SurveyDetail.css'; // 스타일 시트 경로 수정
+import '../../css/SurveyManagement/SurveyDetail.css'; // 스타일 시트 경로 유지
 
 const SurveyDetail = () => {
-    const [product, setProduct] = useState(null); // 상품 상세 정보 상태
-    const { id } = useParams(); // URL에서 상품 ID를 가져옴
+    const [survey, setSurvey] = useState(null); // 설문 상세 정보 상태
+    const { id } = useParams(); // URL에서 설문 ID를 가져옴
     const navigate = useNavigate(); // 페이지 이동을 위한 useNavigate 훅
 
     useEffect(() => {
@@ -28,12 +28,12 @@ const SurveyDetail = () => {
                 );
 
                 if (response.data && response.data.success) {
-                    setProduct(response.data.product);
+                    setSurvey(response.data.survey);
                 } else {
-                    console.log('상품 상세 데이터 로드 실패');
+                    console.log('설문 상세 데이터 로드 실패');
                 }
             } catch (error) {
-                console.error('상품 상세 정보를 가져오는데 실패했습니다.', error);
+                console.error('설문 상세 정보를 가져오는데 실패했습니다.', error);
             }
         };
 
@@ -42,12 +42,12 @@ const SurveyDetail = () => {
 
     // 수정 버튼 클릭 핸들러
     const handleEdit = () => {
-        navigate(`/products/SurveyDetail/${id}/update`); // 수정 페이지로 이동
+        navigate(`/survey/detail/${id}/update`); // 수정 페이지로 이동
     };
 
     // 삭제 버튼 클릭 핸들러
     const handleDelete = async () => {
-        const confirmation = window.confirm('이 상품을 삭제하시겠습니까?');
+        const confirmation = window.confirm('이 설문을 삭제하시겠습니까?');
         if (!confirmation) {
             return;
         }
@@ -69,57 +69,60 @@ const SurveyDetail = () => {
             );
 
             if (response.data && response.data.success) {
-                alert('상품이 삭제되었습니다.');
-                navigate('/products'); // 상품 목록 페이지로 리디렉션
+                alert('설문이 삭제되었습니다.');
+                navigate('/survey'); // 설문 목록 페이지로 리디렉션
             } else {
-                alert('상품 삭제에 실패했습니다.');
+                alert('설문 삭제에 실패했습니다.');
             }
         } catch (error) {
-            console.error('상품 삭제 중 오류가 발생했습니다.', error);
+            console.error('설문 삭제 중 오류가 발생했습니다.', error);
         }
     };
 
-    if (!product) {
+    if (!survey) {
         return <div>로딩 중...</div>;
     }
 
     return (
         <div className="product-detail-container">
             <Header />
-            <h1>상품 정보</h1>
+            <h1>설문 정보</h1>
             <div className="product-detail-content">
                 <div className="product-info">
-                    <h1 className="product-name">상품명: {product.name}</h1>
+                    <h1 className="product-name">설문명: {survey.name}</h1>
 
-                    {/* 카테고리 상위 및 하위 표시 */}
+                    {/* 설문 유형 표시 */}
                     <p className="product-category">
-                        <strong>카테고리:</strong> {product.category}
+                        <strong>설문 유형:</strong> {survey.type}
                     </p>
 
-                    <p className="product-price">
-                        <strong>가격:</strong> {product.price.toLocaleString()} 원
+                    {/* 설문 생성일 (YYYY-MM-DD 형식) */}
+                    <p className="product-date">
+                        <strong>생성일:</strong> {new Date(survey.createdAt).toISOString().split('T')[0]}
                     </p>
 
-                    {/* 사이즈별 재고 */}
-                    {/* <div className="product-stock">
-                        <strong>사이즈별 재고</strong>
+                    {/* 질문 목록 */}
+                    <div className="survey-questions">
+                        <h2>질문 목록</h2>
                         <ul>
-                            {product.sizeStock
-                                ? Object.entries(product.sizeStock)
-                                      .filter(([_, stock]) => stock > 0) // 재고가 0보다 큰 항목만 표시
-                                      .map(([size, stock]) => (
-                                          <li key={size} className="stock-item">
-                                              <span className="stock-size">{size}</span>:{" "}
-                                              <span className="stock-quantity">{stock}개</span>
-                                          </li>
-                                      ))
-                                : <span>재고 정보 없음</span>}
+                            {survey.questions && survey.questions.length > 0 ? (
+                                survey.questions.map((question, index) => (
+                                    <li key={index}>
+                                        <strong>Q{index + 1}:</strong> {question.questionText}
+                                        {question.options && question.options.length > 0 && (
+                                            <ul>
+                                                {question.options.map((option, optionIndex) => (
+                                                    <li key={optionIndex}>{option}</li>
+                                                ))}
+                                            </ul>
+                                        )}
+                                    </li>
+                                ))
+                            ) : (
+                                <p>등록된 질문이 없습니다.</p>
+                            )}
                         </ul>
-                    </div> */}
-
-                    <p className="product-description">
-                        <strong>상세 설명:</strong> {product.description}
-                    </p>
+                    </div>
 
                     <div className="button-container">
                         <button className="edit-button" onClick={handleEdit}>수정</button>

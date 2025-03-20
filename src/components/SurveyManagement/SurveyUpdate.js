@@ -5,21 +5,21 @@ import Header from '../Header';
 import '../../css/SurveyManagement/SurveyUpdate.css';
 
 const SurveyUpdate = () => {
-    const [product, setProduct] = useState(null);
-    const [updatedProduct, setUpdatedProduct] = useState({
+    const [survey, setSurvey] = useState(null);
+    const [updatedSurvey, setUpdatedSurvey] = useState({
         name: '',
-        category: '',
-        price: 0,
+        type: '',
         description: '',
-        sizeStock: {} // 사이즈별 재고를 위한 객체
+        questions: []
     });
+
     const { id } = useParams();
     const navigate = useNavigate();
 
-    const categories = [ "골프의류", "일반의류", "지갑", "가방", "신발", "악세사리", "모자", "기타"]
+    const surveyTypes = ["객관식", "주관식"];
 
     useEffect(() => {
-        const fetchProductDetail = async () => {
+        const fetchSurveyDetail = async () => {
             try {
                 const token = localStorage.getItem('token');
                 if (!token) {
@@ -37,42 +37,62 @@ const SurveyUpdate = () => {
                 );
 
                 if (response.data && response.data.success) {
-                    setProduct(response.data.product);
-                    const { main, sub } = response.data.product.category;
-                    setUpdatedProduct({
-                        name: response.data.product.name,
-                        category: response.data.category,
-                        price: response.data.product.price,
-                        description: response.data.product.description,
-                        sizeStock: response.data.product.sizeStock || {},
+                    setSurvey(response.data.survey);
+                    setUpdatedSurvey({
+                        name: response.data.survey.name,
+                        type: response.data.survey.type,
+                        description: response.data.survey.description || '',
+                        questions: response.data.survey.questions || [],
                     });
                 } else {
-                    console.log('상품 상세 데이터 로드 실패');
+                    console.log('설문 상세 데이터 로드 실패');
                 }
             } catch (error) {
-                console.error('상품 상세 정보를 가져오는데 실패했습니다.', error);
+                console.error('설문 상세 정보를 가져오는데 실패했습니다.', error);
             }
         };
 
-        fetchProductDetail();
+        fetchSurveyDetail();
     }, [id]);
 
+    // 입력 값 변경 핸들러
     const handleChange = (e) => {
         const { name, value } = e.target;
-        if (name.includes('size')) {
-            const size = name.split('_')[1];
-            setUpdatedProduct(prev => ({
-                ...prev,
-                sizeStock: {
-                    ...prev.sizeStock,
-                    [size]: value
-                }
-            }));
-        } else {
-            setUpdatedProduct(prev => ({ ...prev, [name]: value }));
-        }
+        setUpdatedSurvey(prev => ({ ...prev, [name]: value }));
     };
 
+    // 설문 유형 변경 시 초기화
+    const handleTypeChange = (e) => {
+        const newType = e.target.value;
+        setUpdatedSurvey({
+            ...updatedSurvey,
+            type: newType,
+            questions: newType === "객관식" ? [] : [{ questionText: '', options: [] }]
+        });
+    };
+
+    // 질문 텍스트 변경 핸들러
+    const handleQuestionChange = (index, value) => {
+        const updatedQuestions = [...updatedSurvey.questions];
+        updatedQuestions[index].questionText = value;
+        setUpdatedSurvey(prev => ({ ...prev, questions: updatedQuestions }));
+    };
+
+    // 객관식 선택지 추가 핸들러
+    const addOption = (index) => {
+        const updatedQuestions = [...updatedSurvey.questions];
+        updatedQuestions[index].options.push('');
+        setUpdatedSurvey(prev => ({ ...prev, questions: updatedQuestions }));
+    };
+
+    // 객관식 선택지 변경 핸들러
+    const handleOptionChange = (qIndex, oIndex, value) => {
+        const updatedQuestions = [...updatedSurvey.questions];
+        updatedQuestions[qIndex].options[oIndex] = value;
+        setUpdatedSurvey(prev => ({ ...prev, questions: updatedQuestions }));
+    };
+
+    // 설문 저장 핸들러
     const handleSave = async (e) => {
         e.preventDefault();
         const confirmation = window.confirm('수정사항을 저장하시겠습니까?');
@@ -89,118 +109,103 @@ const SurveyUpdate = () => {
 
             const response = await axios.put(
                 `http://localhost:7777/api/survey/${id}`,
-                updatedProduct,
+                updatedSurvey,
                 {
                     headers: {
                         Authorization: `Bearer ${token}`,
+                        'Content-Type': 'application/json',
                     },
                 }
             );
 
             if (response.data && response.data.success) {
-                alert('상품이 수정되었습니다.');
-                navigate(`/products`);
+                alert('설문이 수정되었습니다.');
+                navigate(`/survey`);
             } else {
-                alert('상품 수정에 실패했습니다.');
+                alert('설문 수정에 실패했습니다.');
             }
         } catch (error) {
-            console.error('상품 수정 중 오류가 발생했습니다.', error);
+            console.error('설문 수정 중 오류가 발생했습니다.', error);
             alert('서버와의 연결에 문제가 발생했습니다. 다시 시도해주세요.');
         }
     };
-    if (!product) {
+
+    if (!survey) {
         return <div>로딩 중...</div>;
     }
 
     return (
         <div className="product-update-container">
-            <h2 className="product-update-title">상품 수정</h2>
+            <h2 className="product-update-title">설문 수정</h2>
             <form className="product-update-form" onSubmit={handleSave}>
                 {/* Survey Name */}
                 <div className="product-update-field">
-                    <label className="product-update-label" htmlFor="name">상품 이름</label>
+                    <label className="product-update-label" htmlFor="name">설문 이름</label>
                     <input
                         className="product-update-input"
                         type="text"
                         id="name"
                         name="name"
-                        value={updatedProduct.name}
+                        value={updatedSurvey.name}
                         onChange={handleChange}
-                        placeholder="상품 이름을 입력하세요"
+                        placeholder="설문 이름을 입력하세요"
                         required
                     />
                 </div>
 
-                {/* Category */}
+                {/* Survey Type */}
                 <div className="product-update-field">
-                    <label className="product-update-label" htmlFor="category">카테고리</label>
+                    <label className="product-update-label" htmlFor="type">설문 유형</label>
                     <select
                         className="product-update-input"
-                        id="category"
-                        name="category"
-                        value={updatedProduct.category}
-                        onChange={handleChange}
+                        id="type"
+                        name="type"
+                        value={updatedSurvey.type}
+                        onChange={handleTypeChange}
                         required
                     >
-                        <option value="">카테고리를 선택하세요</option>
-                        {categories.map(category => (
-                            <option key={category} value={category}>
-                                {category}
+                        <option value="">설문 유형을 선택하세요</option>
+                        {surveyTypes.map(type => (
+                            <option key={type} value={type}>
+                                {type}
                             </option>
                         ))}
                     </select>
                 </div>
 
-                {/* Size Stock */}
-                {/* <div className="product-update-field">
-                    <label className="product-update-label">사이즈별 재고</label>
-                    {updatedProduct.category.sub === "신발" ? (
-                        <div className="product-update-size-range">
-                            {Array.from({ length: 21 }, (_, i) => 200 + i * 5).map(size => (
-                                <div key={size} className="product-update-size-field">
-                                    <label className="product-update-size-label">{size} mm</label>
-                                    <input
-                                        className="product-update-input"
-                                        type="number"
-                                        name={`size_${size}`}
-                                        value={updatedProduct.sizeStock[size] || ''}
-                                        onChange={handleChange}
-                                        placeholder={`${size}mm 재고`}
-                                        min="0"
-                                    />
-                                </div>
-                            ))}
-                        </div>
-                    ) : (
-                        ['S', 'M', 'L', 'XL', 'free'].map(size => (
-                            <div key={size} className="product-update-size-field">
-                                <label className="product-update-size-label">{size} 사이즈</label>
-                                <input
-                                    className="product-update-input"
-                                    type="number"
-                                    name={`size_${size}`}
-                                    value={updatedProduct.sizeStock[size] || ''}
-                                    onChange={handleChange}
-                                    placeholder={`${size} 사이즈의 재고 수량`}
-                                />
-                            </div>
-                        ))
-                    )}
-                </div> */}
-
-                {/* Description */}
+                {/* Questions */}
                 <div className="product-update-field">
-                    <label className="product-update-label" htmlFor="description">상품 설명</label>
-                    <textarea
-                        className="product-update-input"
-                        id="description"
-                        name="description"
-                        value={updatedProduct.description}
-                        onChange={handleChange}
-                        placeholder="상품 설명을 입력하세요"
-                        rows="4"
-                    />
+                    <label className="product-update-label">질문 목록</label>
+                    {updatedSurvey.questions.map((question, qIndex) => (
+                        <div key={qIndex} className="survey-question">
+                            <input
+                                type="text"
+                                placeholder={`질문 ${qIndex + 1}`}
+                                value={question.questionText}
+                                onChange={(e) => handleQuestionChange(qIndex, e.target.value)}
+                                required
+                            />
+                            {updatedSurvey.type === "객관식" && (
+                                <div className="survey-options">
+                                    {question.options.map((option, oIndex) => (
+                                        <input
+                                            key={oIndex}
+                                            type="text"
+                                            placeholder={`선택지 ${oIndex + 1}`}
+                                            value={option}
+                                            onChange={(e) => handleOptionChange(qIndex, oIndex, e.target.value)}
+                                            required
+                                        />
+                                    ))}
+                                    <button type="button" onClick={() => addOption(qIndex)}>+ 선택지 추가</button>
+                                </div>
+                            )}
+                        </div>
+                    ))}
                 </div>
+
+       
+                
 
                 <button type="submit" className="product-update-button">수정 저장</button>
             </form>

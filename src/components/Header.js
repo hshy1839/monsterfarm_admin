@@ -53,8 +53,8 @@ const Header = () => {
               </div>
             </Link>
             <div className={`submenu-employee ${isOpen ? 'open' : ''}`}>
-              <Link to="/products" className='submenu-item-employee'>설문 추가</Link>
-              <Link to="/promotion" className='submenu-item-employee'>설문 확인</Link>
+              <Link to="/survey" className='submenu-item-employee'>문제 관리</Link>
+              <Link to="/promotion" className='submenu-item-employee'>답변 관리</Link>
             </div>
           </div>
 
