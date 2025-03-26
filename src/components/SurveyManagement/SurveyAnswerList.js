@@ -64,6 +64,30 @@ const SurveyAnswerList = () => {
         fetchAnswers();
     }, []);
 
+    const handleDelete = async (id) => {
+        const confirmDelete = window.confirm('정말 이 응답을 삭제하시겠습니까?');
+        if (!confirmDelete) return;
+      
+        try {
+          const token = localStorage.getItem('token');
+          const res = await axios.delete(`http://localhost:7777/api/answers/${id}`, {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          });
+      
+          if (res.data.success) {
+            alert('응답이 삭제되었습니다.');
+            fetchAnswers(); // 목록 새로고침
+          } else {
+            alert('삭제 실패: ' + res.data.message);
+          }
+        } catch (err) {
+          console.error('삭제 중 오류:', err);
+          alert('서버 오류로 삭제에 실패했습니다.');
+        }
+      };
+      
     const handleSearch = async () => {
         if (searchTerm === '') {
             fetchAnswers();
@@ -158,42 +182,50 @@ const SurveyAnswerList = () => {
                     </div>
 
                     <table className="product-table">
-                        <thead>
-                            <tr>
-                                <th>번호</th>
-                                <th>사용자 이름</th>
-                                <th>유형</th>
-                                <th>생성 날짜</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            {currentAnswers.length > 0 ? (
-                                currentAnswers.map((answer, index) => (
-                                    <tr key={answer._id}>
-                                        <td>{index + 1 + (currentPage - 1) * itemsPerPage}</td>
-                                        <td
-                                            onClick={() => handleSurveyClick(answer._id)}
-                                            style={{ cursor: 'pointer', color: '#007bff', textDecoration: 'underline' }}
-                                        >
-                                            {userMap[answer.userId] || '불러오는 중...'}
-                                        </td>
+                    <thead>
+  <tr>
+    <th>번호</th>
+    <th>사용자 이름</th>
+    <th>유형</th>
+    <th>생성 날짜</th>
+    <th>삭제</th> {/* ✅ 추가 */}
+  </tr>
+</thead>
+<tbody>
+  {currentAnswers.length > 0 ? (
+    currentAnswers.map((answer, index) => (
+      <tr key={answer._id}>
+        <td>{index + 1 + (currentPage - 1) * itemsPerPage}</td>
+        <td
+          onClick={() => handleSurveyClick(answer._id)}
+          style={{ cursor: 'pointer', color: '#007bff', textDecoration: 'underline' }}
+        >
+          {userMap[answer.userId] || '불러오는 중...'}
+        </td>
+        <td>
+          {answer.answers.map((a, idx) => (
+            <div key={idx}>{a.type}</div>
+          ))}
+        </td>
+        <td>{new Date(answer.createdAt).toISOString().split('T')[0]}</td>
 
-                                        <td>
-                                            {answer.answers.map((a, idx) => (
-                                                <div key={idx}>{a.type}</div>
-                                            ))}
-                                        </td>
-                                        <td>{new Date(answer.createdAt).toISOString().split('T')[0]}</td>
-                                    </tr>
-                                ))
-                            ) : (
-                                <tr>
-                                    <td colSpan="4" className="no-results">
-                                        데이터가 없습니다.
-                                    </td>
-                                </tr>
-                            )}
-                        </tbody>
+        {/* ✅ 삭제 버튼 추가 */}
+        <td>
+          <button
+            onClick={() => handleDelete(answer._id)}
+            style={{ color: 'red', cursor: 'pointer', background: 'none', border: 'none' }}
+          >
+            삭제
+          </button>
+        </td>
+      </tr>
+    ))
+  ) : (
+    <tr>
+      <td colSpan="5" className="no-results">데이터가 없습니다.</td>
+    </tr>
+  )}
+</tbody>
 
                     </table>
 

@@ -90,7 +90,6 @@ const AnswerDetail = () => {
       <h1>설문 응답 상세</h1>
       <div className="product-detail-content">
         <div className="product-info">
-          <p><strong>응답 ID:</strong> {answer._id}</p>
           <p><strong>응답 날짜:</strong> {answer.createdAt ? new Date(answer.createdAt).toISOString().split('T')[0] : '알 수 없음'}</p>
           <p>
   <strong>사용자 이름:</strong>{' '}
