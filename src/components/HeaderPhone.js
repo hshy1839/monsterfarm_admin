@@ -57,7 +57,7 @@ const HeaderPhone = () => {
             </Link>
             <div className={`submenu-employee ${isOpen ? 'open' : ''}`}>
               <Link to="/survey" className='submenu-item-employee'>설문 목록</Link>
-              <Link to="/promotion" className='submenu-item-employee'>설문 추간</Link>
+              <Link to="/survey/answerlists" className='submenu-item-employee'>답변 관리</Link>
             </div>
           </div>
 
