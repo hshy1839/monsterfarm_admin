@@ -6,8 +6,10 @@ import '../../css/SurveyManagement/SurveyCreate.css';
 const SurveyCreate = () => {
   const [name, setName] = useState('');
   const [type, setType] = useState('');
+  const [required, setRequired] = useState('');
   const [questionText, setQuestionText] = useState('');
   const [options, setOptions] = useState([]); // 객관식 선택지
+  const [isSubmitting, setIsSubmitting] = useState(false);
   const navigate = useNavigate();
 
   // 설문 타입 변경 핸들러
@@ -15,7 +17,9 @@ const SurveyCreate = () => {
     setType(e.target.value);
     setOptions([]); // 타입 변경 시 선택지 초기화
   };
-
+  const handleRequiredChange = (e) => {
+    setRequired(e.target.value === "true"); // 🔥 문자열을 Boolean 값으로 변환
+  };
   // 객관식 선택지 추가
   const addOption = () => {
     setOptions([...options, '']); // 빈 선택지 추가
@@ -31,28 +35,26 @@ const SurveyCreate = () => {
   // 설문 제출 핸들러
   const handleSubmit = async (e) => {
     e.preventDefault();
-
-    if (!name || !type || !questionText) {
+    if (isSubmitting) return; // 중복 제출 방지
+    setIsSubmitting(true);
+    if (!name || !type || !questionText || required === "") {
       alert('모든 필수 입력란을 작성해주세요.');
       return;
     }
-
-    if (type === "객관식" && (options.length === 0 || options.some(opt => opt.trim() === ''))) {
-      alert('객관식 질문은 최소 하나의 선택지를 가져야 합니다.');
-      return;
-    }
-
+  
     const token = localStorage.getItem('token');
-
+  
     try {
       const response = await axios.post(
         'http://localhost:7777/api/survey',
         {
           name,
           type,
+          isRequired: Boolean(required), // 🔥 Boolean 값으로 변환 후 전송
           questions: [
             {
               questionText,
+              type,
               options: type === "객관식" ? options : [],
             }
           ]
@@ -64,7 +66,7 @@ const SurveyCreate = () => {
           },
         }
       );
-
+  
       if (response.status === 200) {
         alert('설문이 성공적으로 등록되었습니다.');
         navigate('/survey');
@@ -83,7 +85,7 @@ const SurveyCreate = () => {
       <form className="survey-create-form" onSubmit={handleSubmit}>
         {/* 설문 이름 */}
         <div className="survey-create-field">
-          <label htmlFor="name">설문 이름</label>
+          <label htmlFor="name">설문 제목</label>
           <input
             type="text"
             id="name"
@@ -93,20 +95,9 @@ const SurveyCreate = () => {
             required
           />
         </div>
-
-        {/* 설문 타입 */}
-        <div className="survey-create-field">
-          <label htmlFor="type">타입</label>
-          <select id="type" value={type} onChange={handleTypeChange} required>
-            <option value="">설문 타입을 선택하세요</option>
-            <option value="주관식">주관식</option>
-            <option value="객관식">객관식</option>
-          </select>
-        </div>
-
-        {/* 질문 입력 */}
-        <div className="survey-create-field">
-          <label htmlFor="question">질문</label>
+{/* 질문 입력 */}
+<div className="survey-create-field">
+          <label htmlFor="question">설문 설명</label>
           <input
             type="text"
             id="question"
@@ -116,6 +107,25 @@ const SurveyCreate = () => {
             required
           />
         </div>
+        {/* 설문 타입 */}
+        <div className="survey-create-field">
+          <label htmlFor="type">타입</label>
+          <select id="type" value={type} onChange={handleTypeChange} required>
+            <option value="">설문 타입을 선택하세요</option>
+            <option value="주관식">주관식</option>
+            <option value="객관식">객관식</option>
+          </select>
+        </div>
+        <div className="survey-create-field">
+  <label htmlFor="required">필수사항 여부</label>
+  <select id="required" value={required} onChange={handleRequiredChange} required>
+    <option value="">필수사항 여부를 선택하세요</option>
+    <option value="true">필수사항</option>
+    <option value="false">선택사항</option>
+  </select>
+</div>
+
+        
 
         {/* 객관식 선택지 입력 (타입이 객관식일 때만) */}
         {type === "객관식" && (
@@ -135,7 +145,7 @@ const SurveyCreate = () => {
           </div>
         )}
 
-        <button type="submit" className="survey-create-button">등록</button>
+        <button type="submit" className="survey-create-button" disabled={isSubmitting}>등록</button>
       </form>
     </div>
   );
