@@ -185,7 +185,7 @@ const Main = () => {
                 {/* 오른쪽 */}
                 <div className="main-section1-right">
                   <ResponsiveContainer width="100%" height={300}>
-                    <PieChart>
+                    <PieChart  className="pie-chart">
                       <Pie
                         data={chartData}
                         labelLine={false}

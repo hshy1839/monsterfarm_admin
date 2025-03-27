@@ -133,7 +133,7 @@ h1 {
 .prev-page-btn, 
 .next-page-btn {
   border: none;
-  background-color: white;
+  background-color: transparent;
   color: #007bff;
   font-size: 14px;
   cursor: pointer;
@@ -154,7 +154,7 @@ h1 {
 .prev-page-btn:hover, 
 .next-page-btn:hover {
   border: none;
-  background-color: white;
+  background-color: transparent;
   color: #013872;
   cursor: pointer;
 }
