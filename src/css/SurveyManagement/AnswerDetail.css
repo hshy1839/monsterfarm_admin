@@ -18,7 +18,7 @@
 
   
   .answer-meta {
-    font-size: 14px;
+    font-size: 18px;
     text-align: right;
     margin-bottom: 10px;
     color: blue;
@@ -103,18 +103,18 @@
     display: flex;
     justify-content: center;
     margin-top: 30px;
-    margin-bottom: 10%;
+    margin-bottom: 5%;
   }
   
   .edit-button {
-    padding: 10px 20px;
+    padding: 20px 20px;
     background-color: #73F6E3;
     color: white;
     font-weight: bold;
     border: none;
     border-radius: 8px;
     cursor: pointer;
-    font-size: 16px;
+    font-size: 22px;
   }
   .survey-name {
     color: black;

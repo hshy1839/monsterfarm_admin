@@ -3,7 +3,6 @@ import '../css/Main.css';
 import axios from 'axios';
 
 const Main = () => {
-  // const [activeCouponsCount, setActiveCouponsCount] = useState(0);
   const [totalProductsCount, setTotalProductsCount] = useState(0); // 상품 개수 상태 변수
   const [pendingApprovalCount, setPendingApprovalCount] = useState(0);
 
@@ -57,28 +56,6 @@ const Main = () => {
     fetchTotalProductsCount();
   }, []);
 
-  // useEffect(() => {
-  //   const fetchActiveCouponsCount = async () => {
-  //     try {
-  //       const token = localStorage.getItem('token');
-  //       const response = await axios.get('http://localhost:7777/api/coupons', {
-  //         headers: {
-  //           Authorization: `Bearer ${token}`,
-  //         },
-  //       });
-  //       if (response.data.success) {
-  //         const activeCoupons = response.data.coupons.filter(coupon => coupon.isActive);
-  //         setActiveCouponsCount(activeCoupons.length);
-  //       } else {
-  //         console.error('활성화된 쿠폰 수 가져오기 실패');
-  //       }
-  //     } catch (error) {
-  //       console.error('활성화된 쿠폰 수 가져오기 실패:', error);
-  //     }
-  //   };
-
-  //   fetchActiveCouponsCount();
-  // }, []);
 
   return (
     <div className="main-container">
@@ -88,12 +65,7 @@ const Main = () => {
       <div className="main-container-container">
         <div className="main-section1">
           <div className="main-section1-item-container">
-            {/* <div className="main-section1-item">
-              <div className="main-section1-item-text">활성화된 쿠폰</div>
-              <div className="main-section1-item-percent">
-                <div className="main-section1-item-detail">{activeCouponsCount} 개</div>
-              </div>
-            </div> */}
+        
             <div className="main-section1-item">
               <div className="main-section1-item-text">상품 개수</div>
               <div className="main-section1-item-percent">

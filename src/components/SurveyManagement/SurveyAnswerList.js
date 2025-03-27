@@ -168,7 +168,6 @@ const SurveyAnswerList = () => {
                         >
                             <option value="all">전체</option>
                             <option value="name">사용자 이름</option>
-                            <option value="type">유형</option>
                         </select>
                         <input
                             type="text"
@@ -186,7 +185,6 @@ const SurveyAnswerList = () => {
   <tr>
     <th>번호</th>
     <th>사용자 이름</th>
-    <th>유형</th>
     <th>생성 날짜</th>
     <th>삭제</th> {/* ✅ 추가 */}
   </tr>
@@ -202,11 +200,7 @@ const SurveyAnswerList = () => {
         >
           {userMap[answer.userId] || '불러오는 중...'}
         </td>
-        <td>
-          {answer.answers.map((a, idx) => (
-            <div key={idx}>{a.type}</div>
-          ))}
-        </td>
+       
         <td>{new Date(answer.createdAt).toISOString().split('T')[0]}</td>
 
         {/* ✅ 삭제 버튼 추가 */}
@@ -247,11 +241,6 @@ const SurveyAnswerList = () => {
                             다음
                         </button>
                     </div>
-                </div>
-                <div className="write-btn-container">
-                    <button className="write-btn" onClick={handleWriteClick}>
-                        설문추가
-                    </button>
                 </div>
             </div>
         </div>
