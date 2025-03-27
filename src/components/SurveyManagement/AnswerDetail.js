@@ -114,7 +114,7 @@ const AnswerDetail = () => {
           </div>
 
           <div className="button-container">
-            <button className="edit-button" onClick={() => navigate('/answers')}>
+            <button className="edit-button" onClick={() => navigate('/survey/answerlists')}>
               목록으로
             </button>
           </div>

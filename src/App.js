@@ -47,21 +47,23 @@ function App() {
         <Loading /> // 로딩 중일 때 로딩 페이지 표시
       ) : (
         <Routes>
-        <Route path="/" element={<><Header /><Main /></>} />
-        <Route path="/headerphone" element={<HeaderPhone />} />
-        <Route path="/employeeManagement/users" element={<Users />} />
-        <Route path="/notice" element={<><Header /><Notice /></>} />
-        <Route path="/notice/noticeCreate" element={<><Header /><NoticeCreate /></>} />
-        <Route path="/notice/noticeDetail/:id" element={<NoticeDetail />} />
-        <Route path="/login" element={<Login />} />
-        <Route path="/survey" element={<><Header /><Survey /></>} />
-        <Route path="/survey/create" element={<><Header /><SurveyCreate /></>} />
-        <Route path="/survey/detail/:id" element={<><Header /><SurveyDetail /></>} />
-        <Route path="/survey/answerlists" element={<><Header /><SurveyAnswerList /></>} />
-        <Route path="/survey/answer/detail/:id" element={<><Header /><AnswerDetail /></>} />
-        <Route path="/survey/detail/:id/update" element={<><Header /><SurveyUpdate /></>} />
-        <Route path="/setting" element={<><Header /><Setting /></>} />
+        <Route path="/login" element={<Login />} /> {/* 로그인은 제외 */}
+      
+        <Route path="/" element={<PrivateRoute><><Header /><Main /></></PrivateRoute>} />
+        <Route path="/headerphone" element={<PrivateRoute><HeaderPhone /></PrivateRoute>} />
+        <Route path="/employeeManagement/users" element={<PrivateRoute><Users /></PrivateRoute>} />
+        <Route path="/notice" element={<PrivateRoute><><Header /><Notice /></></PrivateRoute>} />
+        <Route path="/notice/noticeCreate" element={<PrivateRoute><><Header /><NoticeCreate /></></PrivateRoute>} />
+        <Route path="/notice/noticeDetail/:id" element={<PrivateRoute><NoticeDetail /></PrivateRoute>} />
+        <Route path="/survey" element={<PrivateRoute><><Header /><Survey /></></PrivateRoute>} />
+        <Route path="/survey/create" element={<PrivateRoute><><Header /><SurveyCreate /></></PrivateRoute>} />
+        <Route path="/survey/detail/:id" element={<PrivateRoute><><Header /><SurveyDetail /></></PrivateRoute>} />
+        <Route path="/survey/answerlists" element={<PrivateRoute><><Header /><SurveyAnswerList /></></PrivateRoute>} />
+        <Route path="/survey/answer/detail/:id" element={<PrivateRoute><><Header /><AnswerDetail /></></PrivateRoute>} />
+        <Route path="/survey/detail/:id/update" element={<PrivateRoute><><Header /><SurveyUpdate /></></PrivateRoute>} />
+        <Route path="/setting" element={<PrivateRoute><><Header /><Setting /></></PrivateRoute>} />
       </Routes>
+      
       )}
     </div>
   );
@@ -75,34 +77,33 @@ function AppWrapper() {
   );
 }
 
-// PrivateRoute: 로그인 여부와 토큰 유효성 체크
-// const PrivateRoute = ({ children }) => {
-//   const navigate = useNavigate();
-//   const token = localStorage.getItem('token'); // 로컬스토리지에서 토큰 가져오기
+const PrivateRoute = ({ children }) => {
+  const navigate = useNavigate();
+  const token = localStorage.getItem('token');
 
-//   useEffect(() => {
-//     if (!token) {
-//       navigate('/login'); // 토큰이 없으면 로그인 페이지로 리디렉션
-//       return;
-//     }
+  useEffect(() => {
+    if (!token) {
+      navigate('/login');
+      return;
+    }
 
-//     try {
-//       const decodedToken = jwtDecode(token); // jwtDecode 함수로 토큰을 디코딩합니다.
-//       const currentTime = Date.now() / 1000; // 현재 시간 (초 단위)
+    try {
+      const decodedToken = jwtDecode(token);
+      const currentTime = Date.now() / 1000;
 
-//       if (decodedToken.exp < currentTime) {
-//         // 토큰 만료 시간 비교
-//         localStorage.removeItem('token'); // 만료된 토큰 제거
-//         navigate('/login'); // 로그인 페이지로 리디렉션
-//       }
-//     } catch (error) {
-//       console.error('토큰 디코딩 오류:', error);
-//       localStorage.removeItem('token');
-//       navigate('/login'); // 오류 발생 시 로그인 페이지로 리디렉션
-//     }
-//   }, [token, navigate]);
+      if (decodedToken.exp < currentTime) {
+        localStorage.removeItem('token');
+        navigate('/login');
+      }
+    } catch (error) {
+      console.error('토큰 디코딩 오류:', error);
+      localStorage.removeItem('token');
+      navigate('/login');
+    }
+  }, [token, navigate]);
 
-//   return children;
-// };
+  return <>{children}</>;
+};
+
 
 export default AppWrapper;
