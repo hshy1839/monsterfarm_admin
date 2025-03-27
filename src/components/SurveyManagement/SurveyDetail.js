@@ -91,8 +91,8 @@ const SurveyDetail = () => {
       </div>
 
       <div className="surveyDetail-button-container">
-        <button className="edit-button" onClick={handleEdit}>수정</button>
-        <button className="delete-button" onClick={handleDelete}>삭제</button>
+        <button className="surveyDetail-edit-button" onClick={handleEdit}>수정</button>
+        <button className="surveyDetail-delete-button" onClick={handleDelete}>삭제</button>
       </div>
     </div>
   );

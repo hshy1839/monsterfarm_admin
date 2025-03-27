@@ -245,8 +245,6 @@ const Users = () => {
                                 <th>연락처</th>
                                 <th>타입</th>
                                 <th>가입일시</th>
-                                <th>주소지</th>
-                                <th>상태</th>
                                 <th>권한설정</th>
                             </tr>
                         </thead>
@@ -270,40 +268,8 @@ const Users = () => {
                                                     user.user_type == 1 ? '관리자' :
                                                         '알 수 없음'}
                                         </td>
-                                        <td>{new Date(user.created_at).toLocaleDateString()}</td>
-                                        <td>
-                                            <button
-                                                onClick={async () => {
-                                                    if (!user._id || user._id.length !== 24) {
-                                                        alert('유효하지 않은 유저 ID입니다.');
-                                                        return;
-                                                    }
-
-                                                    try {
-                                                        const shippingDetails = await fetchShippingInfo(user._id);
-
-                                                        if (shippingDetails && shippingDetails.length > 0) {
-                                                            // 배열의 각 항목을 줄바꿈하여 연결
-                                                            const formattedDetails = shippingDetails.join('\n');
-
-                                                            // 하나의 alert에 줄바꿈된 내용 출력
-                                                            alert(formattedDetails);
-                                                        } else if (!shippingDetails) {
-                                                            alert('배송지 정보가 없습니다.');
-                                                        } else {
-                                                            alert('배송지 데이터가 올바르지 않습니다.');
-                                                        }
-                                                    } catch (error) {
-                                                        alert('배송지 정보를 가져오는 중 오류가 발생했습니다.');
-                                                        console.error(error);
-                                                    }
-                                                }}
-                                                className="users-table-shippinginfo"
-                                            >
-                                                확인
-                                            </button>
-                                        </td>
-                                        <td>{user.is_active ? '가입 승인' : '대기'}</td>
+                                        <td>{new Date(user.createdAt).toLocaleDateString()}</td>
+                                       
                                         <td>
     {currentUserType == 1 ? (  
         // 로그인한 유저가 관리자(user_type === 1)라면 모든 옵션 표시
@@ -313,8 +279,6 @@ const Users = () => {
             defaultValue=""
         >
             <option value="" disabled>선택하세요</option>
-            <option value="approve">가입승인</option>
-            <option value="reject">활동중지</option>
             <option value="delete">계정삭제</option>
             <option value="1">관리자 변경</option>
             <option value="2">부관리자 변경</option>

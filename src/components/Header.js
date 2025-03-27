@@ -64,23 +64,12 @@ const Header = () => {
               <div className='header-section2-item-text'>고객 관리</div>
             </div>
           </Link>
-          <Link to="/notice" onClick={handleLinkClick}>
-            <div className='header-section2-item'>
-              <FontAwesomeIcon icon={faBullhorn} className='header-section2-item-icon' />
-              <div className='header-section2-item-text'>공지사항</div>
-            </div>
-          </Link>
           
         </div>
 
         {/* 설정 및 로그아웃 */}
         <div className='header-section3'>
-          <Link to="/setting" onClick={handleLinkClick}>
-            <div className='header-section3-item'>
-              <FontAwesomeIcon icon={faCog} className='header-section2-item-icon' />
-              <div className='header-section2-item-text'>설정</div>
-            </div>
-          </Link>
+         
           <div className='header-section3-item' onClick={handleLogout}>
             <FontAwesomeIcon icon={faSignOutAlt} className='header-section2-item-icon' />
             <div className='header-section2-item-text'>로그아웃</div>

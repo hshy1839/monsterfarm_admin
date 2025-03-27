@@ -44,7 +44,8 @@ const Login = () => {
 
   return (
     <div className='login-container' style={{ maxWidth: '400px', margin: 'auto', padding: '20px' }}>
-      <h1>Alice 관리자 페이지</h1>
+      <h1>MonsterFarm</h1>
+      <h1>Admin page</h1>
       <h2>로그인</h2>
       <form onSubmit={handleSubmit}>
         <div className='login-username-container' style={{ marginBottom: '10px' }}>

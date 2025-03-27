@@ -81,15 +81,15 @@ ul {
     color: blue;
   }
   
-  .surveyDetailDetail-button-container {
+  .surveyDetail-button-container {
     display: flex;
     gap: 10px;
     justify-content: center;
     margin-top: 30px;
   }
   
-  .edit-button,
-  .delete-button {
+  .surveyDetail-edit-button,
+  .surveyDetail-delete-button {
     padding: 10px 15px;
     font-size: 16px;
     border: none;
@@ -98,21 +98,21 @@ ul {
     flex: 1;
   }
   
-  .edit-button {
+  .surveyDetail-edit-button {
     background: #007BFF;
     color: white;
   }
   
-  .delete-button {
+  .surveyDetail-delete-button {
     background: #DC3545;
     color: white;
   }
   
-  .edit-button:hover {
+  .surveyDetail-edit-button:hover {
     background: #0056b3;
   }
   
-  .delete-button:hover {
+  .surveyDetail-delete-button:hover {
     background: #c82333;
   }
   
