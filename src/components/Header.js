@@ -42,7 +42,7 @@ const Header = () => {
           <Link to="/" onClick={handleLinkClick}>
             <div className='header-section2-item'>
               <FontAwesomeIcon icon={faGauge} className='header-section2-item-icon' />
-              <div className='header-section2-item-text'>Overview</div>
+              <div className='header-section2-item-text'>통계</div>
             </div>
           </Link>
           <div className='header-section2-item-employee-container'>
