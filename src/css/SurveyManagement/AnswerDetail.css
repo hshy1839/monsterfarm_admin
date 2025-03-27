@@ -1,0 +1,164 @@
+.answer-detail-container {
+    font-family: 'Arial', sans-serif;
+    margin-left: 20%;
+    height: 100%;
+    max-width: 1200px;
+    background: #f9f9f9;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+  }
+  
+  .answer-title {
+    font-size: 28px;
+    font-weight: bold;
+    margin-bottom: 8px;
+    color: #333;
+  }
+
+  
+  .answer-meta {
+    font-size: 14px;
+    text-align: right;
+    margin-bottom: 10px;
+    color: blue;
+  }
+  
+  .answer-card {
+    border: 2px solid black;
+    border-radius: 16px;
+    padding: 20px;
+    margin-bottom: 20px;
+    background-color: white;
+  }
+  
+  .answer-card p {
+    margin: 6px 0;  
+  }
+  
+  .answer-card .survey-name {
+    margin-bottom: 10px;
+  }
+  
+  .option-list {
+    margin-top: 8px;
+    padding-left: 12px;
+  }
+  
+  /* ✅ 옵션 항목(한 줄) */
+  .option-item {
+    display: flex;
+    align-items: center;
+    gap: 18px;
+    font-size: 22px; /* ✔️ 전체 줄 높이/크기 조절 */
+    margin: 10px 0;
+  }
+  
+  /* ✅ 체크박스 자체 크기 키우기 */
+  .option-item input[type="checkbox"] {
+    transform: scale(1.5); /* ✔️ 체크박스 확대 */
+    cursor: default;
+  }
+  
+  /* ✅ 라벨 글자 크기 키우기 */
+  .option-item label {
+    font-size: 22px;
+    cursor: default;
+  }
+  
+  /* ✅ 선택된 항목 강조 스타일 */
+  .option-item.selected label {
+    font-weight: bold;
+    color: #007BFF;
+  }
+  .answer-type {
+    color: red;
+    font-size: 18px;
+    text-align: right;
+  }
+  
+  /* ✅ 기타 입력 내용 */
+  .etc-content {
+    margin-left: 0px;
+    font-size: 22px;
+    color: #007BFF;
+  }
+  
+  .answer-card .selected-option,
+  .answer-card .written-answer {
+    color: #111;
+  }
+  .written-answer {
+    border: 1px solid black;
+    width: 40%;
+    height: 40px;
+    border-radius: 8px;
+    font-size: 18px;
+    padding: 10px;
+    text-align: left;
+    align-content: center;
+  }
+  
+  .answerDetail-button-container {
+    display: flex;
+    justify-content: center;
+    margin-top: 30px;
+    margin-bottom: 10%;
+  }
+  
+  .edit-button {
+    padding: 10px 20px;
+    background-color: #73F6E3;
+    color: white;
+    font-weight: bold;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 16px;
+  }
+  .survey-name {
+    color: black;
+    font-size: 30px;
+    font-weight: bold;
+    text-align: left;
+  }
+  .answer-question {
+    color: black;
+    font-size: 30px;
+    font-weight: bold;
+    text-align: left;
+  }
+  .edit-button:hover {
+    background-color: #46e6d0;
+  }
+  
+  /* 반응형 대응 */
+  @media (max-width: 900px) {
+    .answer-detail-container {
+      margin: 0;
+      max-width: 100%;
+      padding: 16px;
+      height: auto;
+    }
+  
+    .answer-title {
+      font-size: 22px;
+    }
+  
+    .answer-subtitle {
+      font-size: 20px;
+    }
+  
+    .answer-card {
+      padding: 16px;
+    }
+  
+    .answer-card .survey-name .answer-question {
+      font-size: 18px;
+    }
+  
+    .edit-button {
+      width: 100%;
+    }
+  }
+  
