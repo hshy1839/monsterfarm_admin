@@ -196,7 +196,7 @@ a {
 
 
 
-@media screen and (max-width: 900px) {
+@media screen and (max-width: 1260px) {
   .header-container {
     width: 0px;
   }

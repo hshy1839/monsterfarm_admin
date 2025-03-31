@@ -108,7 +108,7 @@ html, body {
 }
 
 /* 반응형 */
-@media screen and (max-width: 900px) {
+@media screen and (max-width: 1260px) {
   .main-container {
     margin-left: 0;
     width: 100%;

@@ -31,12 +31,22 @@ const Survey = () => {
     
             // surveys -> survey (올바른 키 값으로 수정)
             if (response.data.success && Array.isArray(response.data.survey)) {
-                const sortedSurveys = response.data.survey.sort((a, b) => {
-                    return new Date(b.createdAt) - new Date(a.createdAt);
+                let filteredSurveys = response.data.survey;
+            
+                filteredSurveys = filteredSurveys.filter((survey) => {
+                    if (searchCategory === 'all') {
+                        return survey.name.includes(searchTerm) || survey.type.includes(searchTerm);
+                    } else if (searchCategory === 'name') {
+                        return survey.name.includes(searchTerm);
+                    } else if (searchCategory === 'type') {
+                        return survey.type.includes(searchTerm);
+                    }
+                    return true;
                 });
-    
-                setSurveys(sortedSurveys);
-            } else {
+            
+                setSurveys(filteredSurveys);
+            }
+            else {
                 console.error('서버 응답이 예상과 다릅니다:', response.data);
             }
         } catch (error) {
@@ -60,27 +70,32 @@ const Survey = () => {
                     console.log('로그인 정보가 없습니다.');
                     return;
                 }
-
+    
                 const response = await axios.get('http://localhost:7777/api/survey', {
                     headers: {
                         Authorization: `Bearer ${token}`,
                     },
                 });
-
-                if (response.data.success && Array.isArray(response.data.surveys)) {
-                    let filteredSurveys = response.data.surveys;
-
+    
+                // ✅ 이 부분 수정
+                if (response.data.success && Array.isArray(response.data.survey)) {
+                    let filteredSurveys = response.data.survey;
+    
                     filteredSurveys = filteredSurveys.filter((survey) => {
+                        const name = survey.name.toLowerCase();
+                        const type = survey.type.toLowerCase();
+                        const term = searchTerm.toLowerCase();
+    
                         if (searchCategory === 'all') {
-                            return survey.name.includes(searchTerm) || survey.type.includes(searchTerm);
+                            return name.includes(term) || type.includes(term);
                         } else if (searchCategory === 'name') {
-                            return survey.name.includes(searchTerm);
+                            return name.includes(term);
                         } else if (searchCategory === 'type') {
-                            return survey.type.includes(searchTerm);
+                            return type.includes(term);
                         }
                         return true;
                     });
-
+    
                     setSurveys(filteredSurveys);
                 } else {
                     console.error('올바르지 않은 데이터 형식:', response.data);
@@ -90,6 +105,7 @@ const Survey = () => {
             }
         }
     };
+    
 
     const handleSurveyClick = (id) => {
         navigate(`/survey/detail/${id}`);

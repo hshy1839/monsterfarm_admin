@@ -93,7 +93,7 @@ const Users = () => {
               <th>연락처</th>
               <th>가입일</th>
               <th>상세 정보</th>
-              <th>액션</th>
+              <th>회원 관리</th>
             </tr>
           </thead>
           <tbody>
@@ -160,7 +160,10 @@ const Users = () => {
               <p><strong>이메일:</strong> {selectedUser.email || '-'}</p>
               <p><strong>생년월일:</strong> {new Date(selectedUser.birthdate).toLocaleDateString()}</p>
               <p><strong>주소:</strong> {selectedUser.address}</p>
-              <p><strong>작물 종류:</strong> {selectedUser.cropType === '기타' ? selectedUser.customCrop : selectedUser.cropType}</p>
+              <p><strong>작물 종류:</strong> {selectedUser.cropType}</p>
+{selectedUser.customCrop && selectedUser.customCrop.trim() !== '' && (
+  <p><strong>세부 작물:</strong> {selectedUser.customCrop}</p>
+)}
               <p><strong>가입일:</strong> {new Date(selectedUser.createdAt).toLocaleString()}</p>
               <button className="users-close-btn" onClick={() => setSelectedUser(null)}>닫기</button>
             </div>

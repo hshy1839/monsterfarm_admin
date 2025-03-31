@@ -117,7 +117,7 @@ ul {
   }
   
   /* 반응형 대응 */
-  @media (max-width: 900px) {
+  @media (max-width: 1260px) {
     .surveyDetail-detail-container {
       margin: 0;
       max-width: 100%;

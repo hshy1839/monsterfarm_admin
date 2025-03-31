@@ -88,7 +88,7 @@ const SurveyAnswerList = () => {
         }
       };
       
-    const handleSearch = async () => {
+      const handleSearch = async () => {
         if (searchTerm === '') {
             fetchAnswers();
         } else {
@@ -98,28 +98,33 @@ const SurveyAnswerList = () => {
                     console.log('로그인 정보가 없습니다.');
                     return;
                 }
-
-                const response = await axios.get('http://localhost:7777/api/survey', {
+    
+                const response = await axios.get('http://localhost:7777/api/answers', {
                     headers: {
                         Authorization: `Bearer ${token}`,
                     },
                 });
-
+    
                 if (response.data.success && Array.isArray(response.data.answer)) {
                     let filteredAnswers = response.data.answer;
-
-                    filteredAnswers = filteredAnswers.filter((survey) => {
-                        if (searchCategory === 'all') {
-                            return survey.name.includes(searchTerm) || survey.type.includes(searchTerm);
-                        } else if (searchCategory === 'name') {
-                            return survey.name.includes(searchTerm);
-                        } else if (searchCategory === 'type') {
-                            return survey.type.includes(searchTerm);
+    
+                    // 🔥 유저 이름 기반 필터링 (userMap은 useEffect로 채워졌다고 가정)
+                    filteredAnswers = filteredAnswers.filter((answer) => {
+                        const username = userMap[answer.userId] || '';
+                        const term = searchTerm.toLowerCase();
+    
+                        if (searchCategory === 'all' || searchCategory === 'name') {
+                            return username.toLowerCase().includes(term);
                         }
+    
                         return true;
                     });
-
+    
                     setAnswers(filteredAnswers);
+    
+                    // 🔄 필터링 후 누락된 유저 정보가 있을 수 있으니 다시 불러오기
+                    const userIds = [...new Set(filteredAnswers.map(a => a.userId))];
+                    userIds.forEach(uid => fetchUserName(uid));
                 } else {
                     console.error('올바르지 않은 데이터 형식:', response.data);
                 }
@@ -128,6 +133,7 @@ const SurveyAnswerList = () => {
             }
         }
     };
+    
 
     const handleSurveyClick = (id) => {
         navigate(`/survey/answer/detail/${id}`);

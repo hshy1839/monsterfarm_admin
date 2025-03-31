@@ -184,9 +184,11 @@
 
   
   
-  @media (max-width: 900px) {
+  @media (max-width: 1260px) {
     .users-management-container {
-      min-width: 100%;
+      min-width: 90%;
+      padding-left: 5%;
+      padding-right: 5%;
       margin-left: 0;
       height: 100%;
     }
@@ -207,7 +209,6 @@
   
     .users-search-box {
       margin-top: 10%;
-
       flex-direction: column; /* 검색 필드를 수직으로 정렬 */
     }
   
@@ -236,11 +237,11 @@
   
     .users-table th {
       padding: 5px;
-      font-size: 0.4rem;
+      font-size: 0.5rem;
     }
     .users-table td {
       padding: 5px; /* 패딩 감소 */
-      font-size: 0.5rem; /* 폰트 크기 감소 */
+      font-size: 0.6rem; /* 폰트 크기 감소 */
       text-align: center;
     }
   
@@ -251,7 +252,7 @@
     }
   
     .approve-btn-users, .reject-btn-users, .delete-btn-users {
-      font-size: 12px; /* 아이콘 크기 감소 */
+      font-size: 15px; /* 아이콘 크기 감소 */
     }
     
     .users-table th:nth-child(1),
