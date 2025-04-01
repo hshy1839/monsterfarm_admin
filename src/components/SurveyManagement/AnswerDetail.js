@@ -20,7 +20,7 @@ const AnswerDetail = () => {
         if (!token) return;
   
         // 1. 답변 데이터 가져오기
-        const res = await axios.get(`http://localhost:7777/api/answers/${id}`, {
+        const res = await axios.get(`http://3.36.70.200:7777/api/answers/${id}`, {
           headers: { Authorization: `Bearer ${token}` },
         });
   
@@ -33,7 +33,7 @@ const AnswerDetail = () => {
               answerData.answers.map(async (a) => {
                 try {
                   const surveyRes = await axios.get(
-                    `http://localhost:7777/api/survey/${a.surveyId}`,
+                    `http://3.36.70.200:7777/api/survey/${a.surveyId}`,
                     { headers: { Authorization: `Bearer ${token}` } }
                   );
                   const survey = surveyRes.data?.survey;
@@ -97,7 +97,7 @@ const AnswerDetail = () => {
 
     try {
         const token = localStorage.getItem('token');
-        const res = await axios.get(`http://localhost:7777/api/users/userinfo/${userId}`, {
+        const res = await axios.get(`http://3.36.70.200:7777/api/users/userinfo/${userId}`, {
             headers: { Authorization: `Bearer ${token}` },
         });
 

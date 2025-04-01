@@ -19,7 +19,7 @@ const SurveyAnswerList = () => {
 
         try {
             const token = localStorage.getItem('token');
-            const res = await axios.get(`http://localhost:7777/api/users/userinfo/${userId}`, {
+            const res = await axios.get(`http://3.36.70.200:7777/api/users/userinfo/${userId}`, {
                 headers: { Authorization: `Bearer ${token}` },
             });
 
@@ -37,7 +37,7 @@ const SurveyAnswerList = () => {
     const fetchAnswers = async () => {
         try {
             const token = localStorage.getItem('token');
-            const res = await axios.get('http://localhost:7777/api/answers', {
+            const res = await axios.get('http://3.36.70.200:7777/api/answers', {
                 headers: { Authorization: `Bearer ${token}` },
             });
 
@@ -70,7 +70,7 @@ const SurveyAnswerList = () => {
       
         try {
           const token = localStorage.getItem('token');
-          const res = await axios.delete(`http://localhost:7777/api/answers/${id}`, {
+          const res = await axios.delete(`http://3.36.70.200:7777/api/answers/${id}`, {
             headers: {
               Authorization: `Bearer ${token}`,
             },
@@ -99,7 +99,7 @@ const SurveyAnswerList = () => {
                     return;
                 }
     
-                const response = await axios.get('http://localhost:7777/api/answers', {
+                const response = await axios.get('http://3.36.70.200:7777/api/answers', {
                     headers: {
                         Authorization: `Bearer ${token}`,
                     },

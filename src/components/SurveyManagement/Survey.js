@@ -21,7 +21,7 @@ const Survey = () => {
                 return;
             }
     
-            const response = await axios.get('http://localhost:7777/api/survey', {
+            const response = await axios.get('http://3.36.70.200:7777/api/survey', {
                 headers: {
                     Authorization: `Bearer ${token}`,
                 },
@@ -71,7 +71,7 @@ const Survey = () => {
                     return;
                 }
     
-                const response = await axios.get('http://localhost:7777/api/survey', {
+                const response = await axios.get('http://3.36.70.200:7777/api/survey', {
                     headers: {
                         Authorization: `Bearer ${token}`,
                     },
