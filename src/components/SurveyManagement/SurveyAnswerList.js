@@ -111,14 +111,28 @@ const SurveyAnswerList = () => {
                     // 🔥 유저 이름 기반 필터링 (userMap은 useEffect로 채워졌다고 가정)
                     filteredAnswers = filteredAnswers.filter((answer) => {
                         const username = userMap[answer.userId] || '';
+                        const answerYear = new Date(answer.createdAt).getFullYear().toString();
                         const term = searchTerm.toLowerCase();
-    
-                        if (searchCategory === 'all' || searchCategory === 'name') {
-                            return username.toLowerCase().includes(term);
+                      
+                        if (searchCategory === 'all') {
+                          return (
+                            username.toLowerCase().includes(term) ||
+                            answerYear.includes(term)
+                          );
                         }
-    
+                      
+                        if (searchCategory === 'name') {
+                          return username.toLowerCase().includes(term);
+                        }
+                      
+                        if (searchCategory === 'year') {
+                          return answerYear.includes(term);
+                        }
+                      
                         return true;
-                    });
+                      });
+                      
+                    
     
                     setAnswers(filteredAnswers);
     
@@ -174,6 +188,7 @@ const SurveyAnswerList = () => {
                         >
                             <option value="all">전체</option>
                             <option value="name">사용자 이름</option>
+                            <option value="year">연도</option>
                         </select>
                         <input
                             type="text"
