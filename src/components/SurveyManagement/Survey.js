@@ -13,6 +13,16 @@ const Survey = () => {
 
     const navigate = useNavigate();
 
+    const moveSurvey = (fromIndex, toIndex) => {
+        if (toIndex < 0 || toIndex >= surveys.length) return;
+      
+        const updated = [...surveys];
+        const [moved] = updated.splice(fromIndex, 1);
+        updated.splice(toIndex, 0, moved);
+        setSurveys(updated);
+      };
+
+      
     const fetchSurveys = async () => {
         try {
             const token = localStorage.getItem('token');
@@ -166,32 +176,38 @@ const Survey = () => {
                                 <th>설문 이름</th>
                                 <th>유형</th>
                                 <th>생성 날짜</th>
+                                <th>순서</th>
                             </tr>
                         </thead>
                         <tbody>
-                            {currentSurveys.length > 0 ? (
-                                currentSurveys.map((survey, index) => (
-                                    <tr key={survey._id}>
-                                        <td>{index + 1 + (currentPage - 1) * itemsPerPage}</td>
-                                        <td
-                                            onClick={() => handleSurveyClick(survey._id)}
-                                            className='product-title'
-                                        >
-                                            {survey.name || 'Unknown Survey'}
-                                        </td>
-                                        <td>{survey.type || 'Unknown Type'}</td>
-                                        <td>{new Date(survey.createdAt).toISOString().split('T')[0] || 'Unknown date'}</td>
+  {currentSurveys.length > 0 ? (
+    currentSurveys.map((survey, index) => {
+      const globalIndex = index + (currentPage - 1) * itemsPerPage;
 
-                                    </tr>
-                                ))
-                            ) : (
-                                <tr>
-                                    <td colSpan="3" className="no-results">
-                                        데이터가 없습니다.
-                                    </td>
-                                </tr>
-                            )}
-                        </tbody>
+      return (
+        <tr key={survey._id}>
+          <td>{globalIndex + 1}</td>
+          <td
+            onClick={() => handleSurveyClick(survey._id)}
+            className='product-title'
+          >
+            {survey.name || 'Unknown Survey'}
+          </td>
+          <td>{survey.type || 'Unknown Type'}</td>
+          <td>{new Date(survey.createdAt).toISOString().split('T')[0] || 'Unknown date'}</td>
+          <td>
+            <button onClick={() => moveSurvey(globalIndex, globalIndex - 1)}>▲</button>
+            <button onClick={() => moveSurvey(globalIndex, globalIndex + 1)}>▼</button>
+          </td>
+        </tr>
+      );
+    })
+  ) : (
+    <tr>
+      <td colSpan="4" className="no-results">데이터가 없습니다.</td>
+    </tr>
+  )}
+</tbody>
                     </table>
 
                     <div className="pagination">
