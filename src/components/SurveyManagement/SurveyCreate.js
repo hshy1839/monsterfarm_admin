@@ -17,6 +17,13 @@ const SurveyCreate = () => {
     setType(e.target.value);
     setOptions([]); // 타입 변경 시 선택지 초기화
   };
+
+  const handleRemoveOption = (index) => {
+    const updatedOptions = [...options];
+    updatedOptions.splice(index, 1); // 해당 인덱스 삭제
+    setOptions(updatedOptions);
+  };
+  
   const handleRequiredChange = (e) => {
     setRequired(e.target.value === "true"); // 🔥 문자열을 Boolean 값으로 변환
   };
@@ -132,14 +139,22 @@ const SurveyCreate = () => {
           <div className="survey-options">
             <h3>선택지 추가</h3>
             {options.map((option, index) => (
-              <input
-                key={index}
-                type="text"
-                placeholder={`선택지 ${index + 1}`}
-                value={option}
-                onChange={(e) => handleOptionChange(index, e.target.value)}
-                required
-              />
+              <div key={index} className="option-item">
+    <input
+      type="text"
+      placeholder={`선택지 ${index + 1}`}
+      value={option}
+      onChange={(e) => handleOptionChange(index, e.target.value)}
+      required
+    />
+    <button
+      type="button"
+      onClick={() => handleRemoveOption(index)}
+      className="option-remove-button"
+    >
+      ✕
+    </button>
+  </div>
             ))}
             <button type="button" onClick={addOption}>+ 선택지 추가</button>
           </div>

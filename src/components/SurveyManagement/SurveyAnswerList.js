@@ -10,6 +10,8 @@ const SurveyAnswerList = () => {
     const [searchTerm, setSearchTerm] = useState('');
     const [searchCategory, setSearchCategory] = useState('all');
     const [currentPage, setCurrentPage] = useState(1);
+    const [firstAnswerMap, setFirstAnswerMap] = useState({});
+
     const itemsPerPage = 10;
 
     const navigate = useNavigate();
@@ -42,13 +44,23 @@ const SurveyAnswerList = () => {
             });
 
             if (res.data.success && Array.isArray(res.data.answer)) {
-                const sorted = res.data.answer.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
-                setAnswers(sorted);
-
-                // 🔥 사용자 이름 미리 요청
-                const userIds = [...new Set(sorted.map(a => a.userId))];
-                userIds.forEach(uid => fetchUserName(uid));
+              const sorted = res.data.answer.sort((a, b) => new Date(a.createdAt) - new Date(b.createdAt)); // ✅ 오름차순 (가장 오래된 것부터)
+            
+              setAnswers(sorted);
+            
+              // ✅ 각 userId의 가장 첫 응답 ID 저장
+              const firstMap = {};
+              for (const answer of sorted) {
+                if (!firstMap[answer.userId]) {
+                  firstMap[answer.userId] = answer._id;
+                }
+              }
+              setFirstAnswerMap(firstMap);
+            
+              const userIds = [...new Set(sorted.map(a => a.userId))];
+              userIds.forEach(uid => fetchUserName(uid));
             }
+            
         } catch (e) {
             console.error('응답 목록 불러오기 실패:', e);
         }
@@ -207,40 +219,52 @@ const SurveyAnswerList = () => {
     <th>번호</th>
     <th>사용자 이름</th>
     <th>생성 날짜</th>
-    <th>삭제</th> {/* ✅ 추가 */}
+    <th>신규 여부</th> {/* ✅ 추가 */}
+    <th>삭제</th>
   </tr>
 </thead>
+
 <tbody>
   {currentAnswers.length > 0 ? (
-    currentAnswers.map((answer, index) => (
-      <tr key={answer._id}>
-        <td>{index + 1 + (currentPage - 1) * itemsPerPage}</td>
-        <td
-          onClick={() => handleSurveyClick(answer._id)}
-          style={{ cursor: 'pointer', color: '#007bff', textDecoration: 'underline' }}
-        >
-          {userMap[answer.userId] || '불러오는 중...'}
-        </td>
-       
-        <td>{new Date(answer.createdAt).toISOString().split('T')[0]}</td>
+    (() => {
+      const seenUserIds = new Set();
 
-        {/* ✅ 삭제 버튼 추가 */}
-        <td>
-          <button
-            onClick={() => handleDelete(answer._id)}
-            style={{ color: 'red', cursor: 'pointer', background: 'none', border: 'none' }}
-          >
-            삭제
-          </button>
-        </td>
-      </tr>
-    ))
+      return currentAnswers.map((answer, index) => {
+        const userId = answer.userId;
+        const username = userMap[userId] || '불러오는 중...';
+        const isFirst = !seenUserIds.has(userId);
+        seenUserIds.add(userId);
+
+        return (
+          <tr key={answer._id}>
+            <td>{index + 1 + (currentPage - 1) * itemsPerPage}</td>
+            <td
+              onClick={() => handleSurveyClick(answer._id)}
+              style={{ cursor: 'pointer', color: '#007bff', textDecoration: 'underline' }}
+            >
+              {username}
+            </td>
+            <td>{new Date(answer.createdAt).toISOString().split('T')[0]}</td>
+            <td>{firstAnswerMap[answer.userId] === answer._id ? '신규' : '추가 설문'}</td>
+            <td>
+              <button
+                onClick={() => handleDelete(answer._id)}
+                style={{ color: 'red', cursor: 'pointer', background: 'none', border: 'none' }}
+              >
+                삭제
+              </button>
+            </td>
+          </tr>
+        );
+      });
+    })()
   ) : (
     <tr>
       <td colSpan="5" className="no-results">데이터가 없습니다.</td>
     </tr>
   )}
 </tbody>
+
 
                     </table>
 
