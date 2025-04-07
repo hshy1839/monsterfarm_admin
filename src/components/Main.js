@@ -12,6 +12,9 @@ import {
 
 const Main = () => {
   const [surveyStats, setSurveyStats] = useState([]);
+  const [allAnswers, setAllAnswers] = useState([]);
+  const [selectedYear, setSelectedYear] = useState(new Date().getFullYear());
+  const [availableYears, setAvailableYears] = useState([]);
 
   useEffect(() => {
     const fetchAnswers = async () => {
@@ -27,16 +30,15 @@ const Main = () => {
         });
 
         if (res.data.success) {
-          const rawStats = processSurveyStats(res.data.answer);
-          const surveyMeta = await fetchSurveyMeta(rawStats.map(stat => stat.surveyId), token);
+          const answers = res.data.answer;
 
-          const statsWithMeta = rawStats.map(stat => ({
-            ...stat,
-            surveyName: surveyMeta[stat.surveyId]?.name || '제목 없음',
-            surveyQuestions: surveyMeta[stat.surveyId]?.questions || [],
-          }));
+          // 가능한 연도 추출
+          const years = [
+            ...new Set(answers.map((ans) => new Date(ans.createdAt).getFullYear())),
+          ];
+          setAvailableYears(years.sort((a, b) => b - a));
 
-          setSurveyStats(statsWithMeta);
+          setAllAnswers(answers);
         } else {
           console.error('응답 로드 실패');
         }
@@ -47,6 +49,30 @@ const Main = () => {
 
     fetchAnswers();
   }, []);
+
+  useEffect(() => {
+    const filterAndProcess = async () => {
+      const filtered = allAnswers.filter(
+        (ans) => new Date(ans.createdAt).getFullYear() === Number(selectedYear)
+      );
+
+      const rawStats = processSurveyStats(filtered);
+      const token = localStorage.getItem('token');
+      const surveyMeta = await fetchSurveyMeta(rawStats.map(stat => stat.surveyId), token);
+
+      const statsWithMeta = rawStats.map(stat => ({
+        ...stat,
+        surveyName: surveyMeta[stat.surveyId]?.name || '제목 없음',
+        surveyQuestions: surveyMeta[stat.surveyId]?.questions || [],
+      }));
+
+      setSurveyStats(statsWithMeta);
+    };
+
+    if (allAnswers.length > 0) {
+      filterAndProcess();
+    }
+  }, [selectedYear, allAnswers]);
 
   const fetchSurveyMeta = async (surveyIds, token) => {
     const metaMap = {};
@@ -129,16 +155,28 @@ const Main = () => {
     <div className="main-container">
       <div className="main-container-header">
         <h1>전체 설문 응답 통계</h1>
+
+        {/* 연도 선택 드롭다운 */}
+        <select
+          value={selectedYear}
+          onChange={(e) => setSelectedYear(e.target.value)}
+          className="year-selector"
+        >
+          {availableYears.map((year) => (
+            <option key={year} value={year}>
+              {year}년
+            </option>
+          ))}
+        </select>
       </div>
+
       <div className="main-container-container">
         {surveyStats.map((survey) => {
-          // 모든 질문이 주관식이면 해당 설문 제외
           const allSubjective =
             survey.surveyQuestions.length > 0 &&
             survey.surveyQuestions.every((q) => q.type === '주관식');
           if (allSubjective) return null;
 
-          // 질문별 응답 집계 (객관식만)
           const chartData = [];
           Object.entries(survey.questions).forEach(([question, qData]) => {
             if (qData.type !== '객관식') return;
@@ -165,7 +203,6 @@ const Main = () => {
           return (
             <div key={survey.surveyId} className="main-section1">
               <div className="main-section1-content">
-                {/* 왼쪽 */}
                 <div className="main-section1-left">
                   <div className="main-section1-item-text">설문 제목</div>
                   <div className="main-section1-item-detail">{survey.surveyName}</div>
@@ -182,10 +219,9 @@ const Main = () => {
                   <div className="main-section1-item-detail">{survey.totalResponses} 개</div>
                 </div>
 
-                {/* 오른쪽 */}
                 <div className="main-section1-right">
                   <ResponsiveContainer width="100%" height={300}>
-                    <PieChart  className="pie-chart">
+                    <PieChart>
                       <Pie
                         data={chartData}
                         labelLine={false}
