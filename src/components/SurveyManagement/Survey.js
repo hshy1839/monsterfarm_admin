@@ -20,9 +20,30 @@ const Survey = () => {
         const [moved] = updated.splice(fromIndex, 1);
         updated.splice(toIndex, 0, moved);
         setSurveys(updated);
+      
+        // 🔥 서버에 저장
+        updateSurveyOrder(updated);
       };
 
       
+      const updateSurveyOrder = async (updatedSurveys) => {
+        try {
+          const token = localStorage.getItem('token');
+          await axios.patch(
+            'http://localhost:7777/api/survey/order',
+            { surveys: updatedSurveys.map((survey, index) => ({ id: survey._id, order: index })) },
+            {
+              headers: {
+                Authorization: `Bearer ${token}`,
+              },
+            }
+          );
+          console.log("✅ 서버에 순서 저장 완료");
+        } catch (error) {
+          console.error("❌ 서버에 순서 저장 실패", error);
+        }
+      };
+
     const fetchSurveys = async () => {
         try {
             const token = localStorage.getItem('token');
@@ -31,7 +52,7 @@ const Survey = () => {
                 return;
             }
     
-            const response = await axios.get('http://3.36.70.200:7777/api/survey', {
+            const response = await axios.get('http://localhost:7777/api/survey', {
                 headers: {
                     Authorization: `Bearer ${token}`,
                 },
@@ -81,7 +102,7 @@ const Survey = () => {
                     return;
                 }
     
-                const response = await axios.get('http://3.36.70.200:7777/api/survey', {
+                const response = await axios.get('http://localhost:7777/api/survey', {
                     headers: {
                         Authorization: `Bearer ${token}`,
                     },

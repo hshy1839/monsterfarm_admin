@@ -15,7 +15,7 @@ const SurveyDetail = () => {
         const token = localStorage.getItem('token');
         if (!token) return;
 
-        const res = await axios.get(`http://3.36.70.200:7777/api/survey/${id}`, {
+        const res = await axios.get(`http://localhost:7777/api/survey/${id}`, {
           headers: { Authorization: `Bearer ${token}` },
         });
 
@@ -37,7 +37,7 @@ const SurveyDetail = () => {
 
     try {
       const token = localStorage.getItem('token');
-      const res = await axios.delete(`http://3.36.70.200:7777/api/survey/${id}`, {
+      const res = await axios.delete(`http://localhost:7777/api/survey/${id}`, {
         headers: { Authorization: `Bearer ${token}` },
       });
 

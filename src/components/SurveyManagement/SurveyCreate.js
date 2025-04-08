@@ -53,7 +53,7 @@ const SurveyCreate = () => {
   
     try {
       const response = await axios.post(
-        'http://3.36.70.200:7777/api/survey',
+        'http://localhost:7777/api/survey',
         {
           name,
           type,

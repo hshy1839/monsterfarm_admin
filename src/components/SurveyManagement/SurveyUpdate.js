@@ -28,7 +28,7 @@ const SurveyUpdate = () => {
                 }
 
                 const response = await axios.get(
-                    `http://3.36.70.200:7777/api/survey/${id}`,
+                    `http://localhost:7777/api/survey/${id}`,
                     {
                         headers: {
                             Authorization: `Bearer ${token}`,
@@ -134,7 +134,7 @@ const handleSave = async (e) => {
         };
 
         const response = await axios.put(
-            `http://3.36.70.200:7777/api/survey/${id}`,
+            `http://localhost:7777/api/survey/${id}`,
             surveyToSend,
             {
                 headers: {
