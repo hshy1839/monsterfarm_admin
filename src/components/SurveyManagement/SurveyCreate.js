@@ -57,7 +57,7 @@ const SurveyCreate = () => {
         {
           name,
           type,
-          isRequired: Boolean(required), // 🔥 Boolean 값으로 변환 후 전송
+          isRequired: required, // 🔥 Boolean 값으로 변환 후 전송
           questions: [
             {
               questionText,

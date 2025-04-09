@@ -10,6 +10,7 @@ const SurveyUpdate = () => {
         name: '',
         type: '',
         description: '',
+        isRequired: false,
         questions: []
     });
 
@@ -42,6 +43,7 @@ const SurveyUpdate = () => {
                         name: response.data.survey.name,
                         type: response.data.survey.type,
                         description: response.data.survey.description || '',
+                        isRequired: response.data.survey.isRequired || false,
                         questions: response.data.survey.questions || [],
                     });
                 } else {
@@ -61,7 +63,7 @@ const SurveyUpdate = () => {
         setUpdatedSurvey(prev => ({ ...prev, questions: updatedQuestions }));
     };
 
-    
+
     // 입력 값 변경 핸들러
     const handleChange = (e) => {
         const { name, value } = e.target;
@@ -69,22 +71,22 @@ const SurveyUpdate = () => {
     };
 
     // 설문 유형 변경 시 초기화
-   const handleTypeChange = (e) => {
-    const newType = e.target.value;
+    const handleTypeChange = (e) => {
+        const newType = e.target.value;
 
-    // 새로운 질문 초기값
-    const initialQuestion = {
-        questionText: '',
-        type: newType,
-        options: newType === '객관식' ? [''] : []
+        // 새로운 질문 초기값
+        const initialQuestion = {
+            questionText: '',
+            type: newType,
+            options: newType === '객관식' ? [''] : []
+        };
+
+        setUpdatedSurvey({
+            ...updatedSurvey,
+            type: newType,
+            questions: [initialQuestion]
+        });
     };
-
-    setUpdatedSurvey({
-        ...updatedSurvey,
-        type: newType,
-        questions: [initialQuestion]
-    });
-};
     // 질문 텍스트 변경 핸들러
     const handleQuestionChange = (index, value) => {
         const updatedQuestions = [...updatedSurvey.questions];
@@ -107,54 +109,54 @@ const SurveyUpdate = () => {
     };
 
     // 설문 저장 핸들러
-   // 설문 저장 핸들러
-const handleSave = async (e) => {
-    e.preventDefault();
-    const confirmation = window.confirm('수정사항을 저장하시겠습니까?');
-    if (!confirmation) {
-        return;
-    }
-
-    try {
-        const token = localStorage.getItem('token');
-        if (!token) {
-            alert('로그인 정보가 없습니다.');
+    // 설문 저장 핸들러
+    const handleSave = async (e) => {
+        e.preventDefault();
+        const confirmation = window.confirm('수정사항을 저장하시겠습니까?');
+        if (!confirmation) {
             return;
         }
 
-        // 각 질문에 type 필드를 삽입
-        const questionsWithType = updatedSurvey.questions.map((q) => ({
-            ...q,
-            type: updatedSurvey.type // 🔥 여기가 핵심
-        }));
-
-        const surveyToSend = {
-            ...updatedSurvey,
-            questions: questionsWithType,
-        };
-
-        const response = await axios.put(
-            `http://3.36.70.200:7777/api/survey/${id}`,
-            surveyToSend,
-            {
-                headers: {
-                    Authorization: `Bearer ${token}`,
-                    'Content-Type': 'application/json',
-                },
+        try {
+            const token = localStorage.getItem('token');
+            if (!token) {
+                alert('로그인 정보가 없습니다.');
+                return;
             }
-        );
 
-        if (response.data && response.data.success) {
-            alert('설문이 수정되었습니다.');
-            navigate(`/survey`);
-        } else {
-            alert('설문 수정에 실패했습니다.');
+            // 각 질문에 type 필드를 삽입
+            const questionsWithType = updatedSurvey.questions.map((q) => ({
+                ...q,
+                type: updatedSurvey.type // 🔥 여기가 핵심
+            }));
+
+            const surveyToSend = {
+                ...updatedSurvey,
+                questions: questionsWithType,
+            };
+
+            const response = await axios.put(
+                `http://3.36.70.200:7777/api/survey/${id}`,
+                surveyToSend,
+                {
+                    headers: {
+                        Authorization: `Bearer ${token}`,
+                        'Content-Type': 'application/json',
+                    },
+                }
+            );
+
+            if (response.data && response.data.success) {
+                alert('설문이 수정되었습니다.');
+                navigate(`/survey`);
+            } else {
+                alert('설문 수정에 실패했습니다.');
+            }
+        } catch (error) {
+            console.error('설문 수정 중 오류가 발생했습니다.', error);
+            alert('서버와의 연결에 문제가 발생했습니다. 다시 시도해주세요.');
         }
-    } catch (error) {
-        console.error('설문 수정 중 오류가 발생했습니다.', error);
-        alert('서버와의 연결에 문제가 발생했습니다. 다시 시도해주세요.');
-    }
-};
+    };
 
 
     if (!survey) {
@@ -200,6 +202,26 @@ const handleSave = async (e) => {
                     </select>
                 </div>
 
+                <div className="product-update-field">
+                    <label className="product-update-label" htmlFor="isRequired">필수 여부</label>
+                    <select
+                        className="product-update-input"
+                        id="isRequired"
+                        name="isRequired"
+                        value={updatedSurvey.isRequired ? "true" : "false"}
+                        onChange={(e) =>
+                            setUpdatedSurvey(prev => ({
+                                ...prev,
+                                isRequired: e.target.value === "true"
+                            }))
+                        }
+                        required
+                    >
+                        <option value="true">필수사항</option>
+                        <option value="false">선택사항</option>
+                    </select>
+                </div>
+
                 {/* Questions */}
                 <div className="product-update-field">
                     <label className="product-update-label">질문 목록</label>
@@ -214,24 +236,24 @@ const handleSave = async (e) => {
                             />
                             {updatedSurvey.type === "객관식" && (
                                 <div className="survey-options">
-                                 {question.options.map((option, oIndex) => (
-    <div key={oIndex} className="option-item">
-        <input
-            type="text"
-            placeholder={`선택지 ${oIndex + 1}`}
-            value={option}
-            onChange={(e) => handleOptionChange(qIndex, oIndex, e.target.value)}
-            required
-        />
-        <button
-            type="button"
-            className="option-remove-button"
-            onClick={() => removeOption(qIndex, oIndex)}
-        >
-            ✕
-        </button>
-    </div>
-))}
+                                    {question.options.map((option, oIndex) => (
+                                        <div key={oIndex} className="option-item">
+                                            <input
+                                                type="text"
+                                                placeholder={`선택지 ${oIndex + 1}`}
+                                                value={option}
+                                                onChange={(e) => handleOptionChange(qIndex, oIndex, e.target.value)}
+                                                required
+                                            />
+                                            <button
+                                                type="button"
+                                                className="option-remove-button"
+                                                onClick={() => removeOption(qIndex, oIndex)}
+                                            >
+                                                ✕
+                                            </button>
+                                        </div>
+                                    ))}
                                     <button type="button" onClick={() => addOption(qIndex)}>+ 선택지 추가</button>
                                 </div>
                             )}
@@ -239,8 +261,8 @@ const handleSave = async (e) => {
                     ))}
                 </div>
 
-       
-                
+
+
 
                 <button type="submit" className="product-update-button">수정 저장</button>
             </form>
