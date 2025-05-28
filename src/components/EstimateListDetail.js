@@ -1,0 +1,85 @@
+import React, { useEffect, useState } from 'react';
+import { useParams } from 'react-router-dom';
+import axios from 'axios';
+import '../css/EstimateListDetail.css';
+
+const EstimateListDetail = () => {
+  const { id } = useParams();
+  const [estimate, setEstimate] = useState(null);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const fetchEstimateDetail = async () => {
+      try {
+        const token = localStorage.getItem('token');
+        const res = await axios.get(`http://localhost:7777/api/estimates/detail/${id}`, {
+          headers: { Authorization: `Bearer ${token}` },
+        });
+
+        if (res.data.success) {
+          setEstimate(res.data.estimate);
+        } else {
+          console.error('상세 데이터 불러오기 실패');
+        }
+      } catch (err) {
+        console.error('상세 데이터 오류:', err);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchEstimateDetail();
+  }, [id]);
+
+  if (loading) return <div>로딩 중...</div>;
+  if (!estimate) return <div>견적서를 찾을 수 없습니다.</div>;
+
+  return (
+    <div className="estimate-detail-wrapper">
+      <h2>견적서 상세 정보</h2>
+      <table className="estimate-detail-table">
+        <tbody>
+          <tr>
+            <th>견적 대상</th>
+            <td>{estimate.answerId?.userId?.name || '알 수 없음'}</td>
+          </tr>
+          <tr>
+            <th>제조사</th>
+            <td>{estimate.manufacturer}</td>
+          </tr>
+          <tr>
+            <th>견적 금액</th>
+            <td>{Number(estimate.price).toLocaleString()} 원</td>
+          </tr>
+          <tr>
+            <th>드론 기종명</th>
+            <td>{estimate.droneBaseName}</td>
+          </tr>
+          <tr>
+            <th>업로드일</th>
+            <td>{new Date(estimate.createdAt).toLocaleString()}</td>
+          </tr>
+          <tr>
+  <th>항목 리스트</th>
+  <td>
+    <ul>
+      {(estimate.items && Array.isArray(estimate.items)) ? (
+        estimate.items.map((item, idx) => (
+          <li key={idx}>
+            {item.category} - 수량: {item.quantity}, 비고: {item.note}
+          </li>
+        ))
+      ) : (
+        <li>항목 정보 없음</li>
+      )}
+    </ul>
+  </td>
+</tr>
+
+        </tbody>
+      </table>
+    </div>
+  );
+};
+
+export default EstimateListDetail;

@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import axios from 'axios';
 import { useParams } from 'react-router-dom';
 import '../../css/SurveyManagement/Estimate.css';
@@ -11,13 +11,11 @@ const EstimateUpload = () => {
   const [price, setPrice] = useState('');
   const [droneBaseName, setDroneBaseName] = useState('');
   const [items, setItems] = useState([{ category: '', quantity: '', note: '' }]);
-  const [files, setFiles] = useState([]);
   const [uploading, setUploading] = useState(false);
   const { id: answerId } = useParams();
 
 
 
-  const handleFileChange = (e) => setFiles([...e.target.files]);
 
   const handleItemChange = (index, key, value) => {
     const updated = [...items];
@@ -35,7 +33,6 @@ const EstimateUpload = () => {
     formData.append('price', price);
     formData.append('droneBaseName', droneBaseName);
     formData.append('items', JSON.stringify(items));
-    files.forEach(file => formData.append('images', file));
 
     try {
       setUploading(true);
@@ -84,18 +81,12 @@ const EstimateUpload = () => {
       ))}
       <button onClick={addItem}>항목 추가</button>
 
-      <label>이미지 업로드:</label>
-      <input type="file" multiple onChange={handleFileChange} />
 
       <button onClick={handleUpload} disabled={uploading}>
         {uploading ? '업로드 중...' : '업로드'}
       </button>
 
-      <div className="preview-container">
-        {files.map((file, idx) => (
-          <img key={idx} src={URL.createObjectURL(file)} alt={`preview-${idx}`} className="preview-image" />
-        ))}
-      </div>
+      
     </div>
   );
 };
