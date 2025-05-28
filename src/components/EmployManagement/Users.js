@@ -2,11 +2,15 @@ import React, { useState, useEffect } from 'react';
 import '../../css/Users.css';
 import Header from '../Header';
 import axios from 'axios';
+import { useNavigate } from 'react-router-dom';
+
 
 const Users = () => {
   const [users, setUsers] = useState([]);
   const [selectedUser, setSelectedUser] = useState(null);
   const [currentPage, setCurrentPage] = useState(1);
+const navigate = useNavigate();
+
   const itemsPerPage = 10;
 
   const handlePreviousPage = () => {
@@ -17,7 +21,7 @@ const Users = () => {
     const fetchUsers = async () => {
       try {
         const token = localStorage.getItem('token');
-        const res = await axios.get('http://3.36.70.200:7777/api/users/userinfo', {
+        const res = await axios.get('http://localhost:7777/api/users/userinfo', {
           headers: { Authorization: `Bearer ${token}` },
         });
         if (res.data.success) {
@@ -33,13 +37,19 @@ const Users = () => {
   const handleAction = async (userId, action) => {
     const token = localStorage.getItem('token');
     let method = 'put';
-    let url = `http://3.36.70.200:7777/api/users/userinfo/${userId}`;
+    let url = `http://localhost:7777/api/users/userinfo/${userId}`;
     let data = {};
     let message = '';
 
     if (action === 'delete') {
       method = 'delete';
       message = '해당 사용자를 삭제하시겠습니까?';
+    } else if (action === 'activate') {
+      data = { is_active: true };
+      message = '해당 계정을 승인하시겠습니까?';
+    } else if (action === 'deactivate') {
+      data = { is_active: false };
+      message = '해당 계정을 중지하시겠습니까?';
     } else {
       const roleMap = { '1': '관리자', '2': '부관리자' };
       data = { user_type: action };
@@ -92,6 +102,7 @@ const Users = () => {
               <th>이름</th>
               <th>연락처</th>
               <th>가입일</th>
+              <th>유저 권한</th>
               <th>상세 정보</th>
               <th>회원 관리</th>
             </tr>
@@ -105,12 +116,20 @@ const Users = () => {
                 <td>{user.phoneNumber}</td>
                 <td>{new Date(user.createdAt).toLocaleDateString()}</td>
                 <td>
-                  <button
-                    className="users-detail-btn"
-                    onClick={() => setSelectedUser(user)}
-                  >
-                    보기
-                  </button>
+  {user.user_type === '1'
+    ? '관리자'
+    : user.user_type === '2'
+    ? '부관리자'
+    : '일반 유저'}
+</td>
+
+                <td>
+                <button
+  className="users-detail-btn"
+  onClick={() => navigate(`/user/${user._id}`)}
+>
+  보기
+</button>
                 </td>
                 <td>
                   <select
@@ -118,10 +137,12 @@ const Users = () => {
                     defaultValue=""
                     onChange={(e) => handleAction(user._id, e.target.value)}
                   >
-                    <option value="" disabled>선택</option>
-                    <option value="1">관리자 임명</option>
-                    <option value="2">부관리자 임명</option>
-                    <option value="delete">계정 삭제</option>
+                  <option value="" disabled>선택</option>
+  <option value="1">관리자 임명</option>
+  <option value="2">부관리자 임명</option>
+  <option value="activate">계정 승인</option>
+  <option value="deactivate">계정 중지</option>
+  <option value="delete">계정 삭제</option>
                   </select>
                 </td>
               </tr>

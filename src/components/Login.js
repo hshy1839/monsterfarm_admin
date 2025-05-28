@@ -11,36 +11,42 @@ const Login = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-
+  
     if (username === '' || password === '') {
       setErrorMessage('아이디와 비밀번호를 모두 입력하세요.');
       return;
     }
-
+  
     try {
-      const response = await fetch('http://3.36.70.200:7777/api/users/loginAdmin', {
-        method: 'POST', 
+      const response = await fetch('http://localhost:7777/api/users/loginAdmin', {
+        method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ username, password }),
       });
-
-      const data = await response.json(); // 서버 응답 데이터를 파싱
-      
+  
+      const data = await response.json();
+  
       if (!response.ok || !data.loginSuccess) {
-        // 서버에서 실패 메시지 반환 시
         setErrorMessage(data.message || '로그인 실패');
         return;
       }
-
-      // 로그인 성공 시
-      localStorage.setItem('isLoggedIn', true); // 로그인 상태 저장
-      localStorage.setItem('token', data.token); // JWT 토큰 저장
-      navigate('/'); // 메인 페이지로 리디렉션
+  
+      localStorage.setItem('isLoggedIn', true);
+      localStorage.setItem('token', data.token);
+  
+      // 토큰에서 user_type 추출 및 저장
+      const decoded = JSON.parse(atob(data.token.split('.')[1]));
+      localStorage.setItem('user_type', decoded.user_type);
+  
+      navigate('/');
     } catch (error) {
       console.error('로그인 오류:', error);
-      setErrorMessage('로그인 중 오류가 발생했습니다. 서버에 연결할 수 없습니다.', error);
+      setErrorMessage('로그인 중 오류가 발생했습니다. 서버에 연결할 수 없습니다.');
     }
   };
+  
+
+
 
   return (
     <div className='login-container' style={{ maxWidth: '400px', margin: 'auto', padding: '20px' }}>
@@ -59,7 +65,7 @@ const Login = () => {
             style={{ width: '100%', padding: '8px' }}
           />
         </div>
-        <div  className='login-password-container' style={{ marginBottom: '10px' }}>
+        <div className='login-password-container' style={{ marginBottom: '10px' }}>
           <label htmlFor="password">비밀번호</label>
           <input
             type="password"
@@ -76,6 +82,16 @@ const Login = () => {
             로그인
           </button>
         </div>
+        <div>
+          <button
+            className="sign-button"
+            type="button"
+            onClick={() => navigate('/signup')}
+          >
+            회원가입
+          </button>
+        </div>
+
       </form>
     </div>
   );

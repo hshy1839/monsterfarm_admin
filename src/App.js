@@ -13,6 +13,8 @@ import SurveyUpdate from './components/SurveyManagement/SurveyUpdate';
 import HeaderPhone from './components/HeaderPhone';
 import SurveyAnswerList from './components/SurveyManagement/SurveyAnswerList';
 import AnswerDetail from './components/SurveyManagement/AnswerDetail';
+import Signup from './components/Signup';
+import UserDetail from './components/EmployManagement/UserDetail';
 
 function App() {
   const [loading, setLoading] = useState(true); // 초기 로딩 상태를 true로 설정
@@ -43,7 +45,8 @@ function App() {
         <Loading /> // 로딩 중일 때 로딩 페이지 표시
       ) : (
         <Routes>
-        <Route path="/login" element={<Login />} /> {/* 로그인은 제외 */}
+        <Route path="/login" element={<Login />} />
+        <Route path="/signup" element={<Signup />} /> 
       
         <Route path="/" element={<PrivateRoute><><Header /><Main /></></PrivateRoute>} />
         <Route path="/headerphone" element={<PrivateRoute><HeaderPhone /></PrivateRoute>} />
@@ -54,6 +57,7 @@ function App() {
         <Route path="/survey/answerlists" element={<PrivateRoute><><Header /><SurveyAnswerList /></></PrivateRoute>} />
         <Route path="/survey/answer/detail/:id" element={<PrivateRoute><><Header /><AnswerDetail /></></PrivateRoute>} />
         <Route path="/survey/detail/:id/update" element={<PrivateRoute><><Header /><SurveyUpdate /></></PrivateRoute>} />
+        <Route path="/user/:id" element={<PrivateRoute><><Header /><UserDetail /></></PrivateRoute>} />
       </Routes>
       
       )}
