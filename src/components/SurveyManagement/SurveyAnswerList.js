@@ -11,6 +11,14 @@ const SurveyAnswerList = () => {
     const [searchCategory, setSearchCategory] = useState('all');
     const [currentPage, setCurrentPage] = useState(1);
     const [firstAnswerMap, setFirstAnswerMap] = useState({});
+    const [userType, setUserType] = useState(null);
+
+useEffect(() => {
+  const storedType = localStorage.getItem('user_type');
+  if (storedType) {
+    setUserType(storedType);
+  }
+}, []);
 
     const itemsPerPage = 10;
 
@@ -44,7 +52,8 @@ const SurveyAnswerList = () => {
             });
 
             if (res.data.success && Array.isArray(res.data.answer)) {
-              const sorted = res.data.answer.sort((a, b) => new Date(a.createdAt) - new Date(b.createdAt)); // ✅ 오름차순 (가장 오래된 것부터)
+              const sorted = res.data.answer.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt)); // ✅ 내림차순 (최신순)
+
             
               setAnswers(sorted);
             
@@ -220,7 +229,8 @@ const SurveyAnswerList = () => {
     <th>사용자 이름</th>
     <th>생성 날짜</th>
     <th>신규 여부</th> {/* ✅ 추가 */}
-    <th>삭제</th>
+    {userType !== '2' && <th>삭제</th>}
+    <th>견적서</th>
   </tr>
 </thead>
 
@@ -246,12 +256,21 @@ const SurveyAnswerList = () => {
             </td>
             <td>{new Date(answer.createdAt).toISOString().split('T')[0]}</td>
             <td>{firstAnswerMap[answer.userId] === answer._id ? '신규' : '추가 설문'}</td>
-            <td>
+            {userType !== '2' &&<td>
               <button
                 onClick={() => handleDelete(answer._id)}
                 style={{ color: 'red', cursor: 'pointer', background: 'none', border: 'none' }}
               >
                 삭제
+              </button>
+            </td>}
+            <td>
+              <button
+             style={{ color: 'black', cursor: 'pointer', background: 'whitesmoke', border: '1px solid black', borderRadius: '5px', width: '50%' }}
+             onClick={() => navigate(`/estimate/${answer._id}`)}
+
+              >
+                보내기
               </button>
             </td>
           </tr>

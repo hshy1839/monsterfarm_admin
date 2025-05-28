@@ -53,7 +53,9 @@ const Header = () => {
               </div>
             </Link>
             <div className={`submenu-employee ${isOpen ? 'open' : ''}`}>
+            {userType === '1' && (
               <Link to="/survey" className='submenu-item-employee'>문제 관리</Link>
+            )}
               <Link to="/survey/answerlists" className='submenu-item-employee'>답변 관리</Link>
             </div>
           </div>

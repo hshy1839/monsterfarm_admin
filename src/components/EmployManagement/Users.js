@@ -9,13 +9,13 @@ const Users = () => {
   const [users, setUsers] = useState([]);
   const [selectedUser, setSelectedUser] = useState(null);
   const [currentPage, setCurrentPage] = useState(1);
-const navigate = useNavigate();
+  const navigate = useNavigate();
 
   const itemsPerPage = 10;
 
   const handlePreviousPage = () => {
     if (currentPage > 1) setCurrentPage(currentPage - 1);
-};
+  };
 
   useEffect(() => {
     const fetchUsers = async () => {
@@ -105,6 +105,8 @@ const navigate = useNavigate();
               <th>유저 권한</th>
               <th>상세 정보</th>
               <th>회원 관리</th>
+              <th>활성화 상태</th>
+
             </tr>
           </thead>
           <tbody>
@@ -116,20 +118,20 @@ const navigate = useNavigate();
                 <td>{user.phoneNumber}</td>
                 <td>{new Date(user.createdAt).toLocaleDateString()}</td>
                 <td>
-  {user.user_type === '1'
-    ? '관리자'
-    : user.user_type === '2'
-    ? '부관리자'
-    : '일반 유저'}
-</td>
+                  {user.user_type === '1'
+                    ? '관리자'
+                    : user.user_type === '2'
+                      ? '부관리자'
+                      : '일반 유저'}
+                </td>
 
                 <td>
-                <button
-  className="users-detail-btn"
-  onClick={() => navigate(`/user/${user._id}`)}
->
-  보기
-</button>
+                  <button
+                    className="users-detail-btn"
+                    onClick={() => navigate(`/user/${user._id}`)}
+                  >
+                    보기
+                  </button>
                 </td>
                 <td>
                   <select
@@ -137,14 +139,16 @@ const navigate = useNavigate();
                     defaultValue=""
                     onChange={(e) => handleAction(user._id, e.target.value)}
                   >
-                  <option value="" disabled>선택</option>
-  <option value="1">관리자 임명</option>
-  <option value="2">부관리자 임명</option>
-  <option value="activate">계정 승인</option>
-  <option value="deactivate">계정 중지</option>
-  <option value="delete">계정 삭제</option>
+                    <option value="" disabled>선택</option>
+                    <option value="1">관리자 임명</option>
+                    <option value="2">부관리자 임명</option>
+                    <option value="activate">계정 승인</option>
+                    <option value="deactivate">계정 중지</option>
+                    <option value="delete">계정 삭제</option>
                   </select>
                 </td>
+                <td>{user.is_active ? '활성화됨' : '비활성화됨'}</td>
+
               </tr>
             ))}
           </tbody>
@@ -152,23 +156,23 @@ const navigate = useNavigate();
 
         {/* 페이지네이션 */}
         <div className="pagination">
-                        <button className='prev-page-btn' onClick={handlePreviousPage} disabled={currentPage === 1}>
-                            이전
-                        </button>
-                        {[...Array(totalPages)].map((_, i) => (
-                            <button
-                                key={i}
-                                onClick={() => handlePageChange(i + 1)}
-                                className={currentPage === i + 1 ? 'active' : ''}
-                                id='page-number-btn'
-                            >
-                                {i + 1}
-                            </button>
-                        ))}
-                        <button className="next-page-btn" onClick={handleNextPage} disabled={currentPage === totalPages}>
-                            다음
-                        </button>
-                    </div>
+          <button className='prev-page-btn' onClick={handlePreviousPage} disabled={currentPage === 1}>
+            이전
+          </button>
+          {[...Array(totalPages)].map((_, i) => (
+            <button
+              key={i}
+              onClick={() => handlePageChange(i + 1)}
+              className={currentPage === i + 1 ? 'active' : ''}
+              id='page-number-btn'
+            >
+              {i + 1}
+            </button>
+          ))}
+          <button className="next-page-btn" onClick={handleNextPage} disabled={currentPage === totalPages}>
+            다음
+          </button>
+        </div>
 
         {/* 모달 */}
         {selectedUser && (
@@ -182,9 +186,9 @@ const navigate = useNavigate();
               <p><strong>생년월일:</strong> {new Date(selectedUser.birthdate).toLocaleDateString()}</p>
               <p><strong>주소:</strong> {selectedUser.address}</p>
               <p><strong>작물 종류:</strong> {selectedUser.cropType}</p>
-{selectedUser.customCrop && selectedUser.customCrop.trim() !== '' && (
-  <p><strong>세부 작물:</strong> {selectedUser.customCrop}</p>
-)}
+              {selectedUser.customCrop && selectedUser.customCrop.trim() !== '' && (
+                <p><strong>세부 작물:</strong> {selectedUser.customCrop}</p>
+              )}
               <p><strong>가입일:</strong> {new Date(selectedUser.createdAt).toLocaleString()}</p>
               <button className="users-close-btn" onClick={() => setSelectedUser(null)}>닫기</button>
             </div>

@@ -15,6 +15,7 @@ import SurveyAnswerList from './components/SurveyManagement/SurveyAnswerList';
 import AnswerDetail from './components/SurveyManagement/AnswerDetail';
 import Signup from './components/Signup';
 import UserDetail from './components/EmployManagement/UserDetail';
+import Estimate from './components/SurveyManagement/Estimate';
 
 function App() {
   const [loading, setLoading] = useState(true); // 초기 로딩 상태를 true로 설정
@@ -58,6 +59,7 @@ function App() {
         <Route path="/survey/answer/detail/:id" element={<PrivateRoute><><Header /><AnswerDetail /></></PrivateRoute>} />
         <Route path="/survey/detail/:id/update" element={<PrivateRoute><><Header /><SurveyUpdate /></></PrivateRoute>} />
         <Route path="/user/:id" element={<PrivateRoute><><Header /><UserDetail /></></PrivateRoute>} />
+        <Route path="/estimate/:id" element={<PrivateRoute><><Header /><Estimate /></></PrivateRoute>} />
       </Routes>
       
       )}
