@@ -1,0 +1,28 @@
+.estimate-table-wrapper {
+    padding: 40px;
+    margin-left: 20%;
+    background-color: #fff;
+  }
+  
+  .simple-estimate-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+  }
+  
+  .simple-estimate-table th,
+  .simple-estimate-table td {
+    padding: 12px;
+    border: 1px solid #ddd;
+    text-align: center;
+  }
+  
+  .simple-estimate-table th {
+    background-color: #f5f5f5;
+    font-weight: bold;
+  }
+  
+  .simple-estimate-table tr:nth-child(even) {
+    background-color: #fafafa;
+  }
+  

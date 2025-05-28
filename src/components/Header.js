@@ -69,6 +69,12 @@ const Header = () => {
               </div>
             </Link>
           )}
+          <Link to="/estimate/list" onClick={handleLinkClick}>
+              <div className='header-section2-item'>
+                <FontAwesomeIcon icon={faUsers} className='header-section2-item-icon' />
+                <div className='header-section2-item-text'>견적서 확인</div>
+              </div>
+            </Link>
         </div>
 
         <div className='header-section3'>

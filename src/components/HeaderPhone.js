@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'; 
 import { faGauge, faUsers, faCalendarAlt, faBullhorn, faCog, faSignOutAlt, faBars, faTimes } from '@fortawesome/free-solid-svg-icons';
@@ -6,8 +6,16 @@ import '../css/HeaderPhone.css';
 
 const HeaderPhone = () => {
   const [isOpen, setIsOpen] = useState(false);
+
+    const [userType, setUserType] = useState(null);
   const navigate = useNavigate();
 
+
+  useEffect(() => {
+      const type = localStorage.getItem('user_type');
+      setUserType(type);
+    }, []);
+    
   const goBack = () => {
     navigate(-1); // 현재 페이지에서 하나 뒤로 갑니다.
   };
@@ -52,22 +60,24 @@ const HeaderPhone = () => {
             <Link to="#" onClick={toggleMenu}>
               <div className='headerphone-section2-item-employee'>
                 <FontAwesomeIcon icon={faCalendarAlt} className='headerphone-section2-item-employee-icon' />
-                <div className='headerphone-section2-item-text'>상품 관리</div>
+                <div className='headerphone-section2-item-text'>설문 관리</div>
               </div>
             </Link>
             <div className={`submenu-employee ${isOpen ? 'open' : ''}`}>
-              <Link to="/survey" className='submenu-item-employee'>설문 목록</Link>
+            {userType === '1' && (
+              <Link to="/survey" className='submenu-item-employee'>문제 관리</Link>
+            )}
               <Link to="/survey/answerlists" className='submenu-item-employee'>답변 관리</Link>
             </div>
           </div>
-
+          {userType === '1' && (
           <Link to="/employeeManagement/users" onClick={handleLinkClick}>
             <div className='headerphone-section2-item'>
               <FontAwesomeIcon icon={faUsers} className='headerphone-section2-item-icon' />
               <div className='headerphone-section2-item-text'>고객 관리</div>
             </div>
           </Link>
-          
+          )}
           
         </div>
 
