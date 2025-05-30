@@ -220,13 +220,14 @@ const Main = () => {
                 </div>
 
                 <div className="main-section1-right">
-                  <ResponsiveContainer width="100%" height={300}>
+                  <ResponsiveContainer width="100%" height={400}>
                     <PieChart>
                       <Pie
                         data={chartData}
                         labelLine={false}
                         label={({ name, percent }) => `${name} ${(percent * 100).toFixed(0)}%`}
                         outerRadius={100}
+                        fontSize={10}
                         fill="#8884d8"
                         dataKey="value"
                       >
