@@ -39,6 +39,10 @@ const EstimateListDetail = () => {
       <h2>견적서 상세 정보</h2>
       <table className="estimate-detail-table">
         <tbody>
+        <tr>
+            <th>견적 작성자</th>
+            <td>{estimate.uploadedBy?.name || '알 수 없음'}</td>
+          </tr>
           <tr>
             <th>견적 대상</th>
             <td>{estimate.answerId?.userId?.name || '알 수 없음'}</td>

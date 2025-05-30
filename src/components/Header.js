@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'; 
-import { faGauge, faUsers, faCalendarAlt, faSignOutAlt, faBars } from '@fortawesome/free-solid-svg-icons';
+import { faGauge, faUsers, faCalendarAlt, faSignOutAlt, faBars, faFile } from '@fortawesome/free-solid-svg-icons';
 import '../css/Header.css';
 
 const Header = () => {
@@ -71,10 +71,11 @@ const Header = () => {
           )}
           <Link to="/estimate/list" onClick={handleLinkClick}>
               <div className='header-section2-item'>
-                <FontAwesomeIcon icon={faUsers} className='header-section2-item-icon' />
+                <FontAwesomeIcon icon={faFile} className='header-section2-item-icon' />
                 <div className='header-section2-item-text'>견적서 확인</div>
               </div>
             </Link>
+         
         </div>
 
         <div className='header-section3'>
