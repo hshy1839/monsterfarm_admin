@@ -1,28 +1,58 @@
 .estimate-table-wrapper {
-    padding: 40px;
-    margin-left: 20%;
-    background-color: #fff;
-  }
-  
-  .simple-estimate-table {
+  padding: 40px;
+  margin-left: 20%;
+  background-color: #fff;
+  box-sizing: border-box;
+  width: 80%;
+  min-height: 100vh;
+}
+
+.estimate-table-wrapper h2 {
+  margin-top: 0;
+  margin-bottom: 5%;
+}
+
+.table-scroll-container {
+  overflow-x: auto;
+  width: 100%;
+}
+
+.simple-estimate-table {
+  width: 100%;
+  border-collapse: collapse;
+  min-width: 600px; /* 최소 너비를 설정해 모바일에서 가로 스크롤 발생 */
+  margin-top: 20px;
+}
+
+.simple-estimate-table th,
+.simple-estimate-table td {
+  padding: 12px;
+  border: 1px solid #ddd;
+  text-align: center;
+  font-size: 14px;
+  word-break: break-word;
+}
+
+.simple-estimate-table th {
+  background-color: #f5f5f5;
+  font-weight: bold;
+}
+
+.simple-estimate-table tr:nth-child(even) {
+  background-color: #fafafa;
+}
+
+/* 반응형 */
+@media (max-width: 1200px) {
+  .estimate-table-wrapper {
+    padding: 20px;
+    margin-left: 0;
     width: 100%;
-    border-collapse: collapse;
-    margin-top: 20px;
   }
-  
+
   .simple-estimate-table th,
   .simple-estimate-table td {
-    padding: 12px;
-    border: 1px solid #ddd;
-    text-align: center;
+    font-size: 13px;
+    padding: 8px;
   }
-  
-  .simple-estimate-table th {
-    background-color: #f5f5f5;
-    font-weight: bold;
-  }
-  
-  .simple-estimate-table tr:nth-child(even) {
-    background-color: #fafafa;
-  }
-  
+}

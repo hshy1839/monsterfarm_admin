@@ -1,83 +1,117 @@
 .user-detail-container {
-    max-width: 800px;
-    margin: 40px auto;
-    padding: 30px;
-    background-color: #fff;
-    border-radius: 12px;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-    font-family: 'Noto Sans KR', sans-serif;
-  }
-  
-  .user-detail-title {
-    font-size: 28px;
-    margin-bottom: 20px;
-    text-align: center;
-    color: #333;
-    font-weight: bold;
-  }
-  
-  .user-detail-table {
+  margin-left: 20%;
+  padding: 30px;
+  height: 100vh;
+  background-color: #fff;
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  font-family: 'Noto Sans KR', sans-serif;
+  box-sizing: border-box;
+  width: 90%;
+}
+
+.user-detail-title {
+  font-size: 24px;
+  margin-bottom: 20px;
+  text-align: center;
+  color: #333;
+  font-weight: bold;
+}
+
+.user-detail-table {
+  width: 100%;
+  border-collapse: collapse;
+  table-layout: fixed;
+  word-break: break-word;
+}
+
+.user-detail-table th,
+.user-detail-table td {
+  text-align: left;
+  padding: 12px 16px;
+  border-bottom: 1px solid #ddd;
+  font-size: 14px;
+}
+
+.user-detail-table th {
+  background-color: #f6f6f6;
+  font-weight: 600;
+  color: #444;
+  width: 35%;
+}
+
+.user-detail-table td {
+  color: #555;
+}
+
+.detail-image {
+  max-width: 100%;
+  height: auto;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  object-fit: contain;
+  margin-top: 12px;
+}
+
+.back-button,
+.download-button {
+  display: inline-block;
+  padding: 10px 16px;
+  font-size: 16px;
+  border-radius: 6px;
+  text-align: center;
+  cursor: pointer;
+  text-decoration: none;
+  box-sizing: border-box;
+}
+
+.back-button {
+  background-color: #4CAF50;
+  color: white;
+  margin-top: 30px;
+  border: none;
+}
+
+.back-button:hover {
+  background-color: #45a049;
+}
+
+.download-button {
+  background-color: #007bff;
+  color: white;
+  margin-top: 10px;
+}
+
+.download-button:hover {
+  background-color: #0056b3;
+}
+
+/* ✅ 반응형: 모바일 대응 */
+@media (max-width: 1200px) {
+  .user-detail-container {
+    margin-left: 0;
     width: 100%;
-    border-collapse: collapse;
-  }
-  
-  .user-detail-table th,
-  .user-detail-table td {
-    text-align: left;
-    padding: 12px 16px;
-    border-bottom: 1px solid #ddd;
-  }
-  
-  .user-detail-table th {
-    background-color: #f6f6f6;
-    font-weight: 600;
-    color: #444;
-    width: 30%;
-  }
-  
-  .user-detail-table td {
-    color: #555;
-  }
-  
-  .back-button {
-    margin-top: 30px;
-    padding: 10px 16px;
-    background-color: #4CAF50;
-    color: white;
-    border: none;
-    border-radius: 6px;
-    cursor: pointer;
-    font-size: 16px;
   }
 
+  .user-detail-title {
+    font-size: 20px;
+  }
+
+  .user-detail-table th,
+  .user-detail-table td {
+    padding: 8px 10px;
+    font-size: 13px;
+  }
+
+  .back-button,
   .download-button {
-    display: inline-block;
-    margin-top: 6px;
-    padding: 6px 12px;
-    background-color: #007bff;
-    color: white;
-    text-decoration: none;
-    border-radius: 4px;
+    width: 100%;
     font-size: 14px;
+    padding: 10px;
   }
-  
-  .download-button:hover {
-    background-color: #0056b3;
-  }
-  
+
   .detail-image {
-    max-width: 300px;
-    max-height: 300px;
-    width: auto;
+    max-width: 100%;
     height: auto;
-    border: 1px solid #ccc;
-    border-radius: 8px;
-    object-fit: contain;
   }
-  
-  
-  
-  .back-button:hover {
-    background-color: #45a049;
-  }
-  
+}

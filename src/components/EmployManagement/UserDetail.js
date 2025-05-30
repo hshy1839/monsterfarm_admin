@@ -70,7 +70,7 @@ const UserDetail = () => {
         </tbody>
       </table>
 
-      <button onClick={() => navigate(-1)}>뒤로가기</button>
+     
     </div>
   );
 };

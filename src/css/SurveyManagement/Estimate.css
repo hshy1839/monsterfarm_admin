@@ -1,62 +1,93 @@
 .estimate-upload-container {
-margin-left: 20%;
-    background: #fff;
-    padding: 40px;
-    border-radius: 10px;
-    box-shadow: 0 0 10px rgba(0,0,0,0.1);
+  max-width: 800px;
+  margin: 0 auto;
+  background: #fff;
+  padding: 5vw;
+  border-radius: 10px;
+  box-shadow: 0 0 10px rgba(0,0,0,0.1);
+  box-sizing: border-box;
+}
+
+.estimate-upload-container label {
+  display: block;
+  margin: 2.5vh 0 0.5vh;
+  font-weight: 600;
+  font-size: 1rem;
+}
+
+.estimate-upload-container input,
+.estimate-upload-container select {
+  width: 100%;
+  padding: 0.8em;
+  margin-bottom: 1em;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  font-size: 1rem;
+  box-sizing: border-box;
+}
+
+.item-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1em;
+  margin-bottom: 1em;
+}
+
+.item-row input,
+.item-row select {
+  flex: 1 1 200px;
+  min-width: 100px;
+}
+.estimate-upload-btn-container {
+  justify-content: center;
+  justify-items: center;
+  justify-self: center;
+}
+.estimate-upload-btn-container button {
+
+  margin-top: 1.5em;
+  padding: 0.8em 5em;
+  margin-left: 10px;
+  background-color: #007bff;
+  color: #fff;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 1rem;
+}
+
+.estimate-upload-container button:disabled {
+  background-color: #999;
+  cursor: not-allowed;
+}
+
+.preview-container {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-top: 2em;
+}
+
+.preview-image {
+  width: 100px;
+  height: 100px;
+  object-fit: cover;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+}
+
+/* 모바일 대응 */
+@media (max-width: 600px) {
+  .estimate-upload-container {
+    padding: 6vw 4vw;
   }
-  
-  .estimate-upload-container label {
-    display: block;
-    margin: 15px 0 5px;
-    font-weight: 600;
-  }
-  
-  .estimate-upload-container input,
-  .estimate-upload-container select {
-    width: 100%;
-    padding: 10px;
-    margin-bottom: 10px;
-    border: 1px solid #ccc;
-    border-radius: 5px;
-  }
-  
+
   .item-row {
-    display: flex;
-    gap: 10px;
-    margin-bottom: 10px;
+    flex-direction: column;
   }
-  
+
   .item-row input,
   .item-row select {
-    flex: 1;
+    flex: 1 1 100%;
   }
-  
-  .estimate-upload-container button {
-    margin-top: 15px;
-    padding: 10px 20px;
-    background-color: #007bff;
-    color: #fff;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-  }
-  
-  .estimate-upload-container button:disabled {
-    background-color: #999;
-  }
-  
-  .preview-container {
-    display: flex;
-    gap: 10px;
-    margin-top: 20px;
-  }
-  
-  .preview-image {
-    width: 100px;
-    height: 100px;
-    object-fit: cover;
-    border: 1px solid #ccc;
-    border-radius: 5px;
-  }
-  
+}

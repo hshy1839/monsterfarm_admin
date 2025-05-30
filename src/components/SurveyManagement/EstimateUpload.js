@@ -79,13 +79,14 @@ const EstimateUpload = () => {
           <input type="text" placeholder="비고" value={item.note} onChange={(e) => handleItemChange(idx, 'note', e.target.value)} />
         </div>
       ))}
-      <button onClick={addItem}>항목 추가</button>
+      <div className='estimate-upload-btn-container'>
+      <button className="estimate-upload-add-btn" onClick={addItem}>항목 추가</button>
 
 
-      <button onClick={handleUpload} disabled={uploading}>
-        {uploading ? '업로드 중...' : '업로드'}
+      <button className="estimate-upload-upload-btn" onClick={handleUpload} disabled={uploading}>
+        {uploading ? '업로드 중...' : '업로드  '}
       </button>
-
+      </div>
       
     </div>
   );
