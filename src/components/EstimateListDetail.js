@@ -12,7 +12,7 @@ const EstimateListDetail = () => {
     const fetchEstimateDetail = async () => {
       try {
         const token = localStorage.getItem('token');
-        const res = await axios.get(`http://localhost:7777/api/estimates/detail/${id}`, {
+        const res = await axios.get(`http://52.79.251.176:7777/api/estimates/detail/${id}`, {
           headers: { Authorization: `Bearer ${token}` },
         });
 

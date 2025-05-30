@@ -16,9 +16,9 @@ const EstimateList = () => {
           const token = localStorage.getItem('token');
           const userType = localStorage.getItem('user_type'); // '1' 또는 '2'
     
-          let url = 'http://localhost:7777/api/estimates/all';
+          let url = 'http://52.79.251.176:7777/api/estimates/all';
           if (userType === '2') {
-            url = 'http://localhost:7777/api/estimates';
+            url = 'http://52.79.251.176:7777/api/estimates';
           }
     
           const res = await axios.get(url, {

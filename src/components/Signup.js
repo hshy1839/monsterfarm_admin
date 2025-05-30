@@ -49,7 +49,7 @@ const Signup = () => {
 
 
         try {
-            const response = await fetch('http://localhost:7777/api/users/signup/admin', {
+            const response = await fetch('http://52.79.251.176:7777/api/users/signup/admin', {
                 method: 'POST',
                 body: formData,
             });
