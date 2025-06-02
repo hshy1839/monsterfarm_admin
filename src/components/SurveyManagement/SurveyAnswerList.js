@@ -12,6 +12,8 @@ const SurveyAnswerList = () => {
     const [currentPage, setCurrentPage] = useState(1);
     const [firstAnswerMap, setFirstAnswerMap] = useState({});
     const [userType, setUserType] = useState(null);
+    const [estimateCountMap, setEstimateCountMap] = useState({});
+
 
 useEffect(() => {
   const storedType = localStorage.getItem('user_type');
@@ -56,6 +58,11 @@ useEffect(() => {
 
             
               setAnswers(sorted);
+
+              sorted.forEach(answer => {
+                fetchEstimateCount(answer._id);
+              });
+              
             
               // ✅ 각 userId의 가장 첫 응답 ID 저장
               const firstMap = {};
@@ -108,7 +115,28 @@ useEffect(() => {
           alert('서버 오류로 삭제에 실패했습니다.');
         }
       };
+
+      const fetchEstimateCount = async (answerId) => {
+        try {
+          const token = localStorage.getItem('token');
+          const res = await axios.get(`http://localhost:7777/api/estimates/my/count/${answerId}`, {
+            headers: { Authorization: `Bearer ${token}` },
+          });
       
+          if (res.data.success) {
+            setEstimateCountMap(prev => ({ ...prev, [answerId]: res.data.count }));
+          }
+        } catch (e) {
+          console.error(`견적 횟수 조회 실패 (answerId: ${answerId}):`, e);
+          setEstimateCountMap(prev => ({ ...prev, [answerId]: 0 }));
+        }
+      };
+
+      const getUserIdFromToken = (token) => {
+        const payload = JSON.parse(atob(token.split('.')[1]));
+        return payload.userId;
+      };
+
       const handleSearch = async () => {
         if (searchTerm === '') {
             fetchAnswers();
@@ -231,6 +259,7 @@ useEffect(() => {
     <th>신규 여부</th> {/* ✅ 추가 */}
     {userType !== '2' && <th>삭제</th>}
     <th>견적서</th>
+    <th>견적서 발신 횟수</th>
   </tr>
 </thead>
 
@@ -265,14 +294,27 @@ useEffect(() => {
               </button>
             </td>}
             <td>
-              <button
-             style={{ color: 'black', cursor: 'pointer', background: 'whitesmoke', border: '1px solid black', borderRadius: '5px', width: '50%' }}
-             onClick={() => navigate(`/estimate/${answer._id}`)}
-
-              >
-                보내기
-              </button>
-            </td>
+  <button
+    style={{
+      color: 'black',
+      cursor: 'pointer',
+      background: 'whitesmoke',
+      border: '1px solid black',
+      borderRadius: '5px',
+      width: '50%',
+    }}
+    onClick={() => {
+      if ((estimateCountMap[answer._id] ?? 0) >= 2) {
+        alert('견적서는 최대 2번까지 보낼 수 있습니다.');
+        return; // 이동 차단
+      }
+      navigate(`/estimate/${answer._id}`);
+    }}
+  >
+    보내기
+  </button>
+</td>
+            <td>{estimateCountMap[answer._id] ?? '...'}</td>
           </tr>
         );
       });
