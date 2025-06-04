@@ -31,7 +31,7 @@ useEffect(() => {
 
         try {
             const token = localStorage.getItem('token');
-            const res = await axios.get(`http://52.79.251.176:7777/api/users/userinfo/${userId}`, {
+            const res = await axios.get(`http://localhost:7777/api/users/userinfo/${userId}`, {
                 headers: { Authorization: `Bearer ${token}` },
             });
 
@@ -49,7 +49,7 @@ useEffect(() => {
     const fetchAnswers = async () => {
         try {
             const token = localStorage.getItem('token');
-            const res = await axios.get('http://52.79.251.176:7777/api/answers', {
+            const res = await axios.get('http://localhost:7777/api/answers', {
                 headers: { Authorization: `Bearer ${token}` },
             });
 
@@ -98,7 +98,7 @@ useEffect(() => {
       
         try {
           const token = localStorage.getItem('token');
-          const res = await axios.delete(`http://52.79.251.176:7777/api/answers/${id}`, {
+          const res = await axios.delete(`http://localhost:7777/api/answers/${id}`, {
             headers: {
               Authorization: `Bearer ${token}`,
             },
@@ -119,7 +119,7 @@ useEffect(() => {
       const fetchEstimateCount = async (answerId) => {
         try {
           const token = localStorage.getItem('token');
-          const res = await axios.get(`http://52.79.251.176:7777/api/estimates/my/count/${answerId}`, {
+          const res = await axios.get(`http://localhost:7777/api/estimates/my/count/${answerId}`, {
             headers: { Authorization: `Bearer ${token}` },
           });
       
@@ -148,7 +148,7 @@ useEffect(() => {
                     return;
                 }
     
-                const response = await axios.get('http://52.79.251.176:7777/api/answers', {
+                const response = await axios.get('http://localhost:7777/api/answers', {
                     headers: {
                         Authorization: `Bearer ${token}`,
                     },
