@@ -24,9 +24,9 @@ const EstimateList = () => {
       try {
         const token = localStorage.getItem('token');
         const userType = localStorage.getItem('user_type');
-        let url = 'http://localhost:7777/api/estimates/all';
+        let url = 'http://52.79.251.176:7777/api/estimates/all';
         if (userType === '2') {
-          url = 'http://localhost:7777/api/estimates';
+          url = 'http://52.79.251.176:7777/api/estimates';
         }
 
         const res = await axios.get(url, {
@@ -72,7 +72,7 @@ const EstimateList = () => {
       const token = localStorage.getItem('token');
       const newStatus = !currentApprovedStatus;
       await axios.patch(
-        `http://localhost:7777/api/estimates/${id}/approve`,
+        `http://52.79.251.176:7777/api/estimates/${id}/approve`,
         { is_approved: newStatus },
         { headers: { Authorization: `Bearer ${token}` } }
       );
@@ -91,7 +91,7 @@ const EstimateList = () => {
     if (!window.confirm('정말 삭제하시겠습니까?')) return;
     try {
       const token = localStorage.getItem('token');
-      await axios.delete(`http://localhost:7777/api/estimates/${id}`, {
+      await axios.delete(`http://52.79.251.176:7777/api/estimates/${id}`, {
         headers: { Authorization: `Bearer ${token}` },
       });
       alert('삭제되었습니다.');

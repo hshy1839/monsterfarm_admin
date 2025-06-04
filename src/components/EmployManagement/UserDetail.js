@@ -12,7 +12,7 @@ const UserDetail = () => {
     const fetchUser = async () => {
       try {
         const token = localStorage.getItem('token');
-        const res = await axios.get(`http://localhost:7777/api/users/userinfo/${id}`, {
+        const res = await axios.get(`http://52.79.251.176:7777/api/users/userinfo/${id}`, {
           headers: { Authorization: `Bearer ${token}` },
         });
         if (res.data.success) {
@@ -47,7 +47,7 @@ const UserDetail = () => {
   <td>
     {user.businessRegistrationFile ? (
       <img
-      src={`http://localhost:7777/uploads/admin/${user.businessRegistrationFile.split('/').pop()}`}
+      src={`http://52.79.251.176:7777/uploads/admin/${user.businessRegistrationFile.split('/').pop()}`}
       alt="사업자등록증"
       className="detail-image"
     />
@@ -59,7 +59,7 @@ const UserDetail = () => {
   <td>
     {user.bankbookFile ? (
       <img
-      src={`http://localhost:7777/uploads/admin/${user.bankbookFile.split('/').pop()}`}
+      src={`http://52.79.251.176:7777/uploads/admin/${user.bankbookFile.split('/').pop()}`}
         alt="통장 사본"
         className="detail-image"
       />
