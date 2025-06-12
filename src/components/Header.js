@@ -75,6 +75,12 @@ const Header = () => {
                 <div className='header-section2-item-text'>견적서 확인</div>
               </div>
             </Link>
+            <Link to="/reservation/list" onClick={handleLinkClick}>
+              <div className='header-section2-item'>
+                <FontAwesomeIcon icon={faFile} className='header-section2-item-icon' />
+                <div className='header-section2-item-text'>상담 예약</div>
+              </div>
+            </Link>
          
         </div>
 

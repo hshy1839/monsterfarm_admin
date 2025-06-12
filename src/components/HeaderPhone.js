@@ -84,6 +84,12 @@ const HeaderPhone = () => {
               <div className='headerphone-section2-item-text'>견적서 확인</div>
             </div>
           </Link>
+            <Link to="/estimate/list" onClick={handleLinkClick}>
+                        <div className='headerphone-section2-item'>
+                          <FontAwesomeIcon icon={faFile} className='headerphone-section2-item-icon' />
+                          <div className='headerphone-section2-item-text'>상담 예약</div>
+                        </div>
+                      </Link>
         </div>
 
         {/* 설정 및 로그아웃 */}
