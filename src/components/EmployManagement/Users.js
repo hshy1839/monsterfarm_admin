@@ -9,6 +9,14 @@ const Users = () => {
   const [users, setUsers] = useState([]);
   const [selectedUser, setSelectedUser] = useState(null);
   const [currentPage, setCurrentPage] = useState(1);
+  const [filters, setFilters] = useState({
+    username: '',
+    name: '',
+    phoneNumber: '',
+    userType: '',
+    isActive: '',
+  });
+  
   const navigate = useNavigate();
 
   const itemsPerPage = 10;
@@ -16,6 +24,19 @@ const Users = () => {
   const handlePreviousPage = () => {
     if (currentPage > 1) setCurrentPage(currentPage - 1);
   };
+
+  const handleFilterChange = (field, value) => {
+    setFilters(prev => ({ ...prev, [field]: value }));
+    setCurrentPage(1); // 필터 시 첫 페이지로 이동
+  };
+
+  const filteredUsers = users.filter(user =>
+    user.username.toLowerCase().includes(filters.username.toLowerCase()) &&
+    user.name.toLowerCase().includes(filters.name.toLowerCase()) &&
+    user.phoneNumber?.toLowerCase().includes(filters.phoneNumber.toLowerCase()) &&
+    (filters.userType === '' || user.user_type === filters.userType) &&
+    (filters.isActive === '' || (filters.isActive === 'true' ? user.is_active : !user.is_active))
+  );
 
   useEffect(() => {
     const fetchUsers = async () => {
@@ -51,9 +72,9 @@ const Users = () => {
       data = { is_active: false };
       message = '해당 계정을 중지하시겠습니까?';
     } else {
-      const roleMap = { '1': '관리자', '2': '부관리자' };
+      const roleMap = { '1': '관리자', '2': '대리점' };
       data = { user_type: action };
-      message = `해당 사용자를 ${roleMap[action]}로 변경하시겠습니까?`;
+      message = `해당 사용자를 ${roleMap[action]} 변경하시겠습니까?`;
     }
 
     const confirmed = window.confirm(message);
@@ -81,8 +102,9 @@ const Users = () => {
     }
   };
 
-  const totalPages = Math.ceil(users.length / itemsPerPage);
-  const pagedUsers = users.slice((currentPage - 1) * itemsPerPage, currentPage * itemsPerPage);
+  const totalPages = Math.ceil(filteredUsers.length / itemsPerPage);
+const pagedUsers = filteredUsers.slice((currentPage - 1) * itemsPerPage, currentPage * itemsPerPage);
+
 
   const handlePageChange = (pageNum) => setCurrentPage(pageNum);
   const handlePrevPage = () => setCurrentPage(prev => Math.max(prev - 1, 1));
@@ -93,7 +115,22 @@ const Users = () => {
       <Header />
       <div className="users-container">
         <h1 className="users-title">회원 관리</h1>
-
+        <div className="users-filters">
+  <input placeholder="아이디 입력" value={filters.username} onChange={e => handleFilterChange('username', e.target.value)} />
+  <input placeholder="이름 입력" value={filters.name} onChange={e => handleFilterChange('name', e.target.value)} />
+  <input placeholder="연락처 입력" value={filters.phoneNumber} onChange={e => handleFilterChange('phoneNumber', e.target.value)} />
+  <select value={filters.userType} onChange={e => handleFilterChange('userType', e.target.value)}>
+    <option value="">권한 전체</option>
+    <option value="1">관리자</option>
+    <option value="2">대리점</option>
+    <option value="0">일반</option>
+  </select>
+  <select value={filters.isActive} onChange={e => handleFilterChange('isActive', e.target.value)}>
+    <option value="">상태 전체</option>
+    <option value="true">활성화됨</option>
+    <option value="false">비활성화됨</option>
+  </select>
+</div>
         <table className="users-table">
           <thead>
             <tr>
@@ -121,7 +158,7 @@ const Users = () => {
                   {user.user_type === '1'
                     ? '관리자'
                     : user.user_type === '2'
-                      ? '부관리자'
+                      ? '대리점'
                       : '일반 유저'}
                 </td>
 
@@ -141,7 +178,7 @@ const Users = () => {
                   >
                     <option value="" disabled>선택</option>
                     <option value="1">관리자 임명</option>
-                    <option value="2">부관리자 임명</option>
+                    <option value="2">대리점 임명</option>
                     <option value="activate">계정 승인</option>
                     <option value="deactivate">계정 중지</option>
                     <option value="delete">계정 삭제</option>

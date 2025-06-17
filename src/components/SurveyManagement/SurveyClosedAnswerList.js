@@ -4,7 +4,7 @@ import Header from '../Header.js';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 
-const SurveyAnswerList = () => {
+const SurveyClosedAnswerList = () => {
   const [answers, setAnswers] = useState([]);
   const [userMap, setUserMap] = useState({});
   const [searchTerm, setSearchTerm] = useState('');
@@ -89,15 +89,13 @@ const SurveyAnswerList = () => {
         // ✅ 최신순 정렬
         const sorted = enriched.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
 
-// ✅ 7일 이내 설문만 필터링
-const now = new Date();
-const filtered = sorted.filter(answer => {
-  const created = new Date(answer.createdAt);
-  return now - created <= 7 * 24 * 60 * 60 * 1000;
-});
-
-// ✅ 상태에 저장
-setAnswers(filtered);
+        const filtered = sorted.filter(answer => {
+            const created = new Date(answer.createdAt);
+            const now = new Date();
+            return now - created > 7 * 24 * 60 * 60 * 1000; // 7일 이상 지난 항목만 표시
+          });
+          
+          setAnswers(filtered);
 
         // ✅ 견적 횟수 불러오기
         sorted.forEach(answer => {
@@ -303,7 +301,7 @@ setAnswers(filtered);
       <Header />
       <div className="product-management-container-container">
         <div className="product-top-container-container">
-          <h1>입찰 참여</h1>
+          <h1>입찰 마감 설문</h1>
           <div className="product-search-box">
             <select
               className="search-category"
@@ -337,8 +335,6 @@ setAnswers(filtered);
                 <th style={{ width: '50px' }}>시/군</th> {/* 추가 */}
                 <th>신규 여부</th> {/* ✅ 추가 */}
                 {userType !== '2' && <th>삭제</th>}
-                <th>입찰 마감</th>
-                <th>견적서</th>
                 <th>견적 횟수</th>
               </tr>
             </thead>
@@ -375,29 +371,8 @@ setAnswers(filtered);
                             삭제
                           </button>
                         </td>}
-                        <td>{getRemainingTime(answer.createdAt)}</td>
-                        <td>
-                          <button
-                            style={{
-                              color: 'black',
-                              cursor: 'pointer',
-                              background: 'whitesmoke',
-                              border: '1px solid black',
-                              borderRadius: '5px',
-                              width: '50%',
-                            }}
-                            onClick={() => {
-                              if ((estimateCountMap[answer._id] ?? 0) >= 2) {
-                                alert('견적서는 최대 2번까지 보낼 수 있습니다.');
-                                return; // 이동 차단
-                              }
-                              navigate(`/estimate/${answer._id}`);
-                            }}
-                          >
-                            보내기
-                          </button>
-
-                        </td>
+                     
+                       
                         <td>{estimateCountMap[answer._id] ?? '...'}</td>
                       </tr>
                     );
@@ -437,4 +412,4 @@ setAnswers(filtered);
   );
 };
 
-export default SurveyAnswerList;
+export default SurveyClosedAnswerList;

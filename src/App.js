@@ -19,6 +19,7 @@ import EstimateUpload from './components/SurveyManagement/EstimateUpload';
 import EstimateList from './components/EstimateList';
 import EstimateListDetail from './components/EstimateListDetail';
 import ReservationList from './components/SurveyManagement/Reservation';
+import SurveyClosedAnswerList from './components/SurveyManagement/SurveyClosedAnswerList';
 
 function App() {
   const [loading, setLoading] = useState(true); // 초기 로딩 상태를 true로 설정
@@ -59,6 +60,7 @@ function App() {
         <Route path="/survey/create" element={<PrivateRoute><><Header /><SurveyCreate /></></PrivateRoute>} />
         <Route path="/survey/detail/:id" element={<PrivateRoute><><Header /><SurveyDetail /></></PrivateRoute>} />
         <Route path="/survey/answerlists" element={<PrivateRoute><><Header /><SurveyAnswerList /></></PrivateRoute>} />
+        <Route path="/survey/closed/answerlists" element={<PrivateRoute><><Header /><SurveyClosedAnswerList /></></PrivateRoute>} />
         <Route path="/survey/answer/detail/:id" element={<PrivateRoute><><Header /><AnswerDetail /></></PrivateRoute>} />
         <Route path="/survey/detail/:id/update" element={<PrivateRoute><><Header /><SurveyUpdate /></></PrivateRoute>} />
         <Route path="/user/:id" element={<PrivateRoute><><Header /><UserDetail /></></PrivateRoute>} />

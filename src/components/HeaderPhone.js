@@ -56,20 +56,33 @@ const HeaderPhone = () => {
               <div className='headerphone-section2-item-text'>통계</div>
             </div>
           </Link>
-          <div className='headerphone-section2-item-employee-container'>
-            <Link to="#" onClick={toggleMenu}>
-              <div className='headerphone-section2-item-employee'>
-                <FontAwesomeIcon icon={faCalendarAlt} className='headerphone-section2-item-employee-icon' />
-                <div className='headerphone-section2-item-text'>설문 관리</div>
-              </div>
-            </Link>
-            <div className={`submenu-employee ${isOpen ? 'open' : ''}`}>
-              {userType === '1' && (
-                <Link to="/survey" className='submenu-item-employee'>문제 관리</Link>
-              )}
-              <Link to="/survey/answerlists" className='submenu-item-employee'>답변 관리</Link>
-            </div>
-          </div>
+               <div className='header-section2-item-employee-container'>
+         {userType === '2' ? (
+           // userType이 '2'인 경우: 바로 이동
+           <Link to="/survey/answerlists" onClick={handleLinkClick}>
+             <div className='header-section2-item-employee'>
+               <FontAwesomeIcon icon={faCalendarAlt} className='header-section2-item-employee-icon' />
+               <div className='header-section2-item-text'>입찰 참여</div>
+             </div>
+           </Link>
+         ) : (
+           // 관리자(userType === '1')일 경우: 드롭다운 메뉴
+           <>
+             <Link to="#" onClick={toggleMenu}>
+               <div className='headerphone-section2-item-employee'>
+                 <FontAwesomeIcon icon={faCalendarAlt} className='headerphone-section2-item-employee-icon' />
+                 <div className='headerphone-section2-item-text'>입찰 참여</div>
+               </div>
+             </Link>
+             <div className={`submenu-employee ${isOpen ? 'open' : ''}`}>
+             
+                     <Link to="/survey" className='submenu-item-employee'>설문 문항</Link>
+                     <Link to="/survey/answerlists" className='submenu-item-employee'>입찰 참여</Link>
+                     <Link to="/survey/closed/answerlists" className='submenu-item-employee'>입찰마감설문</Link>
+             </div>
+           </>
+         )}
+       </div>
           {userType === '1' && (
             <Link to="/employeeManagement/users" onClick={handleLinkClick}>
               <div className='headerphone-section2-item'>
@@ -84,12 +97,14 @@ const HeaderPhone = () => {
               <div className='headerphone-section2-item-text'>견적서 확인</div>
             </div>
           </Link>
+          {userType === '1' && (
             <Link to="/estimate/list" onClick={handleLinkClick}>
                         <div className='headerphone-section2-item'>
                           <FontAwesomeIcon icon={faFile} className='headerphone-section2-item-icon' />
                           <div className='headerphone-section2-item-text'>상담 예약</div>
                         </div>
                       </Link>
+                       )}
         </div>
 
         {/* 설정 및 로그아웃 */}

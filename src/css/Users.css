@@ -176,6 +176,15 @@
   cursor: pointer;
 }
 
+.users-filters input,
+.users-filters select {
+  margin-right: 10px;
+  margin-bottom: 10px; /* 줄바꿈될 경우 대비 */
+  padding: 6px 10px;
+  font-size: 14px;
+}
+
+
 @keyframes fadeIn {
   from { opacity: 0; transform: translateY(-20px); }
   to   { opacity: 1; transform: translateY(0); }

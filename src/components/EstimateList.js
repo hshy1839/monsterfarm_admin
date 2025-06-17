@@ -15,6 +15,7 @@ const EstimateList = () => {
     manufacturer: 'all',
     region: 'all',
     city: 'all',
+    year: 'all',
   });
 
   const navigate = useNavigate();
@@ -206,6 +207,25 @@ const EstimateList = () => {
       ))}
     </select>
   </label>
+  <label style={{ marginRight: '20px' }}>
+  업로드 연도:
+  <select
+    value={filter.year}
+    onChange={(e) => setFilter({ ...filter, year: e.target.value })}
+    style={{ marginLeft: '8px' }}
+  >
+    <option value="all">전체</option>
+    {Array.from(
+      new Set(estimates.map(e => new Date(e.createdAt).getFullYear()))
+    )
+      .filter(Boolean)
+      .sort((a, b) => b - a) // 최신 연도부터 정렬
+      .map((year, i) => (
+        <option key={i} value={year}>{year}년</option>
+      ))}
+  </select>
+</label>
+
 </div>
 
       </div>

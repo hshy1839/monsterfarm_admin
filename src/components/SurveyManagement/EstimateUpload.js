@@ -92,6 +92,9 @@ const EstimateUpload = () => {
           <option key={idx} value={opt}>{opt}</option>
         ))}
       </select>
+      <p style={{ color: 'red', marginTop: '5px' , textAlign: 'left'}}>
+  * 본인의 법인명을 작성할 시 입찰 승인이 거부됩니다. 반드시 제작회사 혹은 조립드론으로 입력해 주세요.
+</p>
 
       {manufacturer === '직접입력' && (
         <input

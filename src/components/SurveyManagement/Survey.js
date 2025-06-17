@@ -168,7 +168,7 @@ const Survey = () => {
             <Header />
             <div className="product-management-container-container">
                 <div className="product-top-container-container">
-                    <h1>설문조사 관리</h1>
+                    <h1>입찰 참여</h1>
                     <div className="product-search-box">
                         <select
                             className="search-category"

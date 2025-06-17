@@ -32,6 +32,30 @@
   font-size: 14px;
   word-break: break-word;
 }
+.pagination {
+  display: flex;
+  justify-content: center;
+  margin-top: 20px;
+  gap: 8px;
+}
+
+.pagination button {
+  border: none;
+  background: none;
+  color: #007bff; /* 파란색 */
+  cursor: pointer;
+  font-size: 16px;
+}
+
+.pagination button:hover {
+  text-decoration: none;
+}
+
+.pagination .active {
+  font-weight: bold;
+  color: black;
+  text-decoration: none;
+}
 
 .simple-estimate-table th {
   background-color: #f5f5f5;

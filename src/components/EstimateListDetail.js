@@ -1,10 +1,11 @@
 import React, { useEffect, useState } from 'react';
-import { useParams } from 'react-router-dom';
+import { useParams, useNavigate } from 'react-router-dom'; // ← navigate 추가
 import axios from 'axios';
 import '../css/EstimateListDetail.css';
 
 const EstimateListDetail = () => {
   const { id } = useParams();
+  const navigate = useNavigate(); // ← navigate 사용 선언
   const [estimate, setEstimate] = useState(null);
   const [loading, setLoading] = useState(true);
 
@@ -31,6 +32,21 @@ const EstimateListDetail = () => {
     fetchEstimateDetail();
   }, [id]);
 
+  const handleDelete = async () => {
+    if (!window.confirm('정말 삭제하시겠습니까?')) return;
+    try {
+      const token = localStorage.getItem('token');
+      await axios.delete(`http://52.79.251.176:7777/api/estimates/${id}`, {
+        headers: { Authorization: `Bearer ${token}` },
+      });
+      alert('삭제되었습니다.');
+      navigate('/estimate/list'); // ← 목록 페이지로 이동 (경로는 필요에 따라 수정)
+    } catch (error) {
+      console.error('삭제 오류:', error);
+      alert('삭제 중 오류가 발생했습니다.');
+    }
+  };
+
   if (loading) return <div>로딩 중...</div>;
   if (!estimate) return <div>견적서를 찾을 수 없습니다.</div>;
 
@@ -39,7 +55,7 @@ const EstimateListDetail = () => {
       <h2>견적서 상세 정보</h2>
       <table className="estimate-detail-table">
         <tbody>
-        <tr>
+          <tr>
             <th>견적 작성자</th>
             <td>{estimate.uploadedBy?.name || '알 수 없음'}</td>
           </tr>
@@ -64,24 +80,40 @@ const EstimateListDetail = () => {
             <td>{new Date(estimate.createdAt).toLocaleString()}</td>
           </tr>
           <tr>
-  <th>항목 리스트</th>
-  <td>
-    <ul>
-      {(estimate.items && Array.isArray(estimate.items)) ? (
-        estimate.items.map((item, idx) => (
-          <li key={idx}>
-            {item.category} - 수량: {item.quantity}, 비고: {item.note}
-          </li>
-        ))
-      ) : (
-        <li>항목 정보 없음</li>
-      )}
-    </ul>
-  </td>
-</tr>
-
+            <th>항목 리스트</th>
+            <td>
+              <ul>
+                {estimate.items?.length > 0 ? (
+                  estimate.items.map((item, idx) => (
+                    <li key={idx}>
+                      {item.category} - 수량: {item.quantity}, 비고: {item.note}
+                    </li>
+                  ))
+                ) : (
+                  <li>항목 정보 없음</li>
+                )}
+              </ul>
+            </td>
+          </tr>
         </tbody>
       </table>
+
+      {/* 삭제 버튼 */}
+      <div style={{ marginTop: '20px', textAlign: 'right' }}>
+        <button
+          style={{
+            padding: '10px 20px',
+            backgroundColor: '#d9534f',
+            color: '#fff',
+            border: 'none',
+            borderRadius: '5px',
+            cursor: 'pointer',
+          }}
+          onClick={handleDelete}
+        >
+          삭제하기
+        </button>
+      </div>
     </div>
   );
 };
