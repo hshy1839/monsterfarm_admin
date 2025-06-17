@@ -239,14 +239,6 @@ const ReservationList = () => {
                   <th style={{ padding: '8px', borderBottom: '1px solid #ddd' }}>견적 금액</th>
                   <td style={{ padding: '8px', borderBottom: '1px solid #ddd' }}>{est.price ? `${est.price.toLocaleString()}원` : '없음'}</td>
                 </tr>
-                <tr>
-                  <th style={{ padding: '8px', borderBottom: '1px solid #ddd' }}>선택됨</th>
-                  <td style={{ padding: '8px', borderBottom: '1px solid #ddd' }}>{est.is_selected ? '✅' : '❌'}</td>
-                </tr>
-                <tr>
-                  <th style={{ padding: '8px', borderBottom: '1px solid #ddd' }}>승인됨</th>
-                  <td style={{ padding: '8px', borderBottom: '1px solid #ddd' }}>{est.is_approved ? '✅' : '❌'}</td>
-                </tr>
                 {Array.isArray(est.items) && est.items.length > 0 && (
                   <tr>
                     <th style={{ padding: '8px', verticalAlign: 'top' }}>견적 항목</th>
