@@ -37,7 +37,7 @@ const ReservationList = () => {
       if (!answerId) continue;
   
       try {
-        const res = await axios.get(`http://52.79.103.39:7777/api/estimates/by-answer/${answerId}`);
+        const res = await axios.get(`http://52.79.251.176:7777/api/estimates/by-answer/${answerId}`);
         if (res.data.success) {
           const estimates = res.data.estimates;
           const dealerNames = estimates
@@ -62,7 +62,7 @@ const ReservationList = () => {
     const fetchReservations = async () => {
       try {
         const token = localStorage.getItem('token');
-        const res = await axios.get('http://52.79.103.39:7777/api/reservation', {
+        const res = await axios.get('http://52.79.251.176:7777/api/reservation', {
           headers: { Authorization: `Bearer ${token}` },
         });
     
@@ -99,7 +99,7 @@ const ReservationList = () => {
     try {
       const token = localStorage.getItem('token');
       await axios.put(
-        `http://52.79.103.39:7777/api/reservation/${id}`,
+        `http://52.79.251.176:7777/api/reservation/${id}`,
         { status: newStatus },
         {
           headers: { Authorization: `Bearer ${token}` },

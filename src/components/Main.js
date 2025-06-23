@@ -25,7 +25,7 @@ const Main = () => {
           return;
         }
 
-        const res = await axios.get('http://52.79.103.39:7777/api/answers', {
+        const res = await axios.get('http://52.79.251.176:7777/api/answers', {
           headers: { Authorization: `Bearer ${token}` },
         });
 
@@ -81,7 +81,7 @@ const Main = () => {
     await Promise.all(
       uniqueIds.map(async (id) => {
         try {
-          const res = await axios.get(`http://52.79.103.39:7777/api/survey/${id}`, {
+          const res = await axios.get(`http://52.79.251.176:7777/api/survey/${id}`, {
             headers: { Authorization: `Bearer ${token}` },
           });
           if (res.data.success && res.data.survey) {

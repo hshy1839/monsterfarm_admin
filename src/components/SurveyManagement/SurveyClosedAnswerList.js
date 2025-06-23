@@ -31,7 +31,7 @@ const SurveyClosedAnswerList = () => {
   if (userMap[userId]) return;
   try {
     const token = localStorage.getItem('token');
-    const res = await axios.get(`http://52.79.103.39:7777/api/users/userinfo/${userId}`, {
+    const res = await axios.get(`http://52.79.251.176:7777/api/users/userinfo/${userId}`, {
       headers: { Authorization: `Bearer ${token}` },
     });
 
@@ -51,7 +51,7 @@ const SurveyClosedAnswerList = () => {
     const newMap = {};
     for (const ans of answerList) {
       try {
-        const res = await axios.get(`http://52.79.103.39:7777/api/estimates/by-answer/${ans._id}`);
+        const res = await axios.get(`http://52.79.251.176:7777/api/estimates/by-answer/${ans._id}`);
         if (res.data.success) newMap[ans._id] = res.data.estimates;
       } catch (err) {
         console.error('입찰 정보 조회 실패:', err);
@@ -63,7 +63,7 @@ const SurveyClosedAnswerList = () => {
   const fetchAnswers = async () => {
     try {
       const token = localStorage.getItem('token');
-      const res = await axios.get('http://52.79.103.39:7777/api/answers', {
+      const res = await axios.get('http://52.79.251.176:7777/api/answers', {
         headers: { Authorization: `Bearer ${token}` },
       });
 

@@ -27,8 +27,8 @@ const EstimateList = () => {
       try {
         const token = localStorage.getItem('token');
         const userType = localStorage.getItem('user_type');
-        let url = 'http://52.79.103.39:7777/api/estimates/all';
-        if (userType === '2') url = 'http://52.79.103.39:7777/api/estimates';
+        let url = 'http://52.79.251.176:7777/api/estimates/all';
+        if (userType === '2') url = 'http://52.79.251.176:7777/api/estimates';
 
         const res = await axios.get(url, {
           headers: { Authorization: `Bearer ${token}` },
@@ -76,7 +76,7 @@ const EstimateList = () => {
     if (!resultMap[answerId]) {
       try {
         const token = localStorage.getItem('token');
-        const res = await axios.get(`http://52.79.103.39:7777/api/estimates/by-answer/${answerId}`, {
+        const res = await axios.get(`http://52.79.251.176:7777/api/estimates/by-answer/${answerId}`, {
           headers: { Authorization: `Bearer ${token}` },
         });
         if (res.data.success) setResultMap(prev => ({ ...prev, [answerId]: res.data.estimates }));

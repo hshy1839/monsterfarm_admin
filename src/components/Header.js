@@ -31,7 +31,7 @@ const Header = () => {
     const fetchCompanyName = async () => {
       try {
         const token = localStorage.getItem('token');
-        const res = await axios.get('http://52.79.103.39:7777/api/users/userinfoget', {
+        const res = await axios.get('http://52.79.251.176:7777/api/users/userinfoget', {
           headers: { Authorization: `Bearer ${token}` },
         });
         if (res.data.success) {
