@@ -22,7 +22,7 @@ const UserDetail = () => {
     const fetchUser = async () => {
       try {
         const token = localStorage.getItem('token');
-        const res = await axios.get(`http://52.79.251.176:7777/api/users/userinfo/${id}`, {
+        const res = await axios.get(`http://52.79.103.39:7777/api/users/userinfo/${id}`, {
           headers: { Authorization: `Bearer ${token}` },
         });
         if (res.data.success) {
@@ -58,7 +58,7 @@ const UserDetail = () => {
         <td>
           {user.businessRegistrationFile ? (
         <a
-        href={`http://52.79.251.176:7777/api/users/download/business/${user.businessRegistrationFile?.split('/').pop()}`}
+        href={`http://52.79.103.39:7777/api/users/download/business/${user.businessRegistrationFile?.split('/').pop()}`}
       >
         사업자등록증 다운로드
       </a>
@@ -72,7 +72,7 @@ const UserDetail = () => {
         <td>
           {user.bankbookFile ? (
           <a
-          href={`http://52.79.251.176:7777/api/users/download/bank/${user.bankbookFile?.split('/').pop()}`}
+          href={`http://52.79.103.39:7777/api/users/download/bank/${user.bankbookFile?.split('/').pop()}`}
         >
           통장사본 다운로드
         </a>

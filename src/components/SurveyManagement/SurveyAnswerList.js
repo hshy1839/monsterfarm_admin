@@ -31,7 +31,7 @@ const SurveyAnswerList = () => {
 
     try {
       const token = localStorage.getItem('token');
-      const res = await axios.get(`http://52.79.251.176:7777/api/users/userinfo/${userId}`, {
+      const res = await axios.get(`http://52.79.103.39:7777/api/users/userinfo/${userId}`, {
         headers: { Authorization: `Bearer ${token}` },
       });
 
@@ -63,7 +63,7 @@ const SurveyAnswerList = () => {
   const fetchAnswers = async () => {
     try {
       const token = localStorage.getItem('token');
-      const res = await axios.get('http://52.79.251.176:7777/api/answers', {
+      const res = await axios.get('http://52.79.103.39:7777/api/answers', {
         headers: { Authorization: `Bearer ${token}` },
       });
 
@@ -149,7 +149,7 @@ setAnswers(filtered);
 
     try {
       const token = localStorage.getItem('token');
-      const res = await axios.delete(`http://52.79.251.176:7777/api/answers/${id}`, {
+      const res = await axios.delete(`http://52.79.103.39:7777/api/answers/${id}`, {
         headers: {
           Authorization: `Bearer ${token}`,
         },
@@ -170,7 +170,7 @@ setAnswers(filtered);
   const fetchEstimateCount = async (answerId) => {
     try {
       const token = localStorage.getItem('token');
-      const res = await axios.get(`http://52.79.251.176:7777/api/estimates/my/count/${answerId}`, {
+      const res = await axios.get(`http://52.79.103.39:7777/api/estimates/my/count/${answerId}`, {
         headers: { Authorization: `Bearer ${token}` },
       });
 
@@ -199,7 +199,7 @@ setAnswers(filtered);
           return;
         }
 
-        const response = await axios.get('http://52.79.251.176:7777/api/answers', {
+        const response = await axios.get('http://52.79.103.39:7777/api/answers', {
           headers: {
             Authorization: `Bearer ${token}`,
           },
@@ -394,7 +394,7 @@ setAnswers(filtered);
                               navigate(`/estimate/${answer._id}`);
                             }}
                           >
-                            보내기
+                            전송
                           </button>
 
                         </td>

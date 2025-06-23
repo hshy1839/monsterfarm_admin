@@ -42,7 +42,7 @@ const Users = () => {
     const fetchUsers = async () => {
       try {
         const token = localStorage.getItem('token');
-        const res = await axios.get('http://52.79.251.176:7777/api/users/userinfo', {
+        const res = await axios.get('http://52.79.103.39:7777/api/users/userinfo', {
           headers: { Authorization: `Bearer ${token}` },
         });
         if (res.data.success) {
@@ -58,7 +58,7 @@ const Users = () => {
   const handleAction = async (userId, action) => {
     const token = localStorage.getItem('token');
     let method = 'put';
-    let url = `http://52.79.251.176:7777/api/users/userinfo/${userId}`;
+    let url = `http://52.79.103.39:7777/api/users/userinfo/${userId}`;
     let data = {};
     let message = '';
 

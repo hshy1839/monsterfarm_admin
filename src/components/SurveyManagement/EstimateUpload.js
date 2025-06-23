@@ -67,7 +67,7 @@ const EstimateUpload = () => {
   
     try {
       setUploading(true);
-      await axios.post('http://52.79.251.176:7777/api/estimates', formData, {
+      await axios.post('http://52.79.103.39:7777/api/estimates', formData, {
         headers: { Authorization: `Bearer ${token}` },
       });
       alert('견적서 업로드 성공!');

@@ -13,7 +13,7 @@ const EstimateListDetail = () => {
     const fetchEstimateDetail = async () => {
       try {
         const token = localStorage.getItem('token');
-        const res = await axios.get(`http://52.79.251.176:7777/api/estimates/detail/${id}`, {
+        const res = await axios.get(`http://52.79.103.39:7777/api/estimates/detail/${id}`, {
           headers: { Authorization: `Bearer ${token}` },
         });
 
@@ -36,7 +36,7 @@ const EstimateListDetail = () => {
     if (!window.confirm('정말 삭제하시겠습니까?')) return;
     try {
       const token = localStorage.getItem('token');
-      await axios.delete(`http://52.79.251.176:7777/api/estimates/${id}`, {
+      await axios.delete(`http://52.79.103.39:7777/api/estimates/${id}`, {
         headers: { Authorization: `Bearer ${token}` },
       });
       alert('삭제되었습니다.');

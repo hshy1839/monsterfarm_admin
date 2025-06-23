@@ -22,7 +22,7 @@ const StatusDetail = () => {
                     return;
                 }
 
-                const response = await axios.get('http://52.79.251.176:7777/api/users/allAttendanceInfo', {
+                const response = await axios.get('http://52.79.103.39:7777/api/users/allAttendanceInfo', {
                     headers: {
                         Authorization: `Bearer ${token}`,
                     },
@@ -35,7 +35,7 @@ const StatusDetail = () => {
                     const newUserNames = {};
                     for (const record of response.data) {
                         if (record.userId && !newUserNames[record.userId]) {
-                            const userResponse = await axios.get(`http://52.79.251.176:7777/api/users/userinfo/${record.userId}`, {
+                            const userResponse = await axios.get(`http://52.79.103.39:7777/api/users/userinfo/${record.userId}`, {
                                 headers: {
                                     Authorization: `Bearer ${token}`,
                                 },

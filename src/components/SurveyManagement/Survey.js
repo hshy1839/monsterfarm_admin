@@ -30,7 +30,7 @@ const Survey = () => {
         try {
           const token = localStorage.getItem('token');
           await axios.patch(
-            'http://52.79.251.176:7777/api/survey/order',
+            'http://52.79.103.39:7777/api/survey/order',
             { surveys: updatedSurveys.map((survey, index) => ({ id: survey._id, order: index })) },
             {
               headers: {
@@ -52,7 +52,7 @@ const Survey = () => {
                 return;
             }
     
-            const response = await axios.get('http://52.79.251.176:7777/api/survey', {
+            const response = await axios.get('http://52.79.103.39:7777/api/survey', {
                 headers: {
                     Authorization: `Bearer ${token}`,
                 },
@@ -102,7 +102,7 @@ const Survey = () => {
                     return;
                 }
     
-                const response = await axios.get('http://52.79.251.176:7777/api/survey', {
+                const response = await axios.get('http://52.79.103.39:7777/api/survey', {
                     headers: {
                         Authorization: `Bearer ${token}`,
                     },

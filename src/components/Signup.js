@@ -54,7 +54,7 @@ const Signup = () => {
         formData.append('bankCopyFile', bankCopyFile);
 
         try {
-            const response = await fetch('http://52.79.251.176:7777/api/users/signup/admin', {
+            const response = await fetch('http://52.79.103.39:7777/api/users/signup/admin', {
                 method: 'POST',
                 body: formData,
             });

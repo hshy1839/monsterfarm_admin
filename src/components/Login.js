@@ -18,7 +18,7 @@ const Login = () => {
     }
   
     try {
-      const response = await fetch('http://52.79.251.176:7777/api/users/loginAdmin', {
+      const response = await fetch('http://52.79.103.39:7777/api/users/loginAdmin', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ username, password }),
@@ -51,8 +51,7 @@ const Login = () => {
   return (
     <div className='login-container' style={{ maxWidth: '400px', margin: 'auto', padding: '20px' }}>
       <h1>MonsterFarm</h1>
-      <h1>Admin page</h1>
-      <h2>로그인</h2>
+      <h1>대리점 페이지</h1>
       <form onSubmit={handleSubmit}>
         <div className='login-username-container' style={{ marginBottom: '10px' }}>
           <label htmlFor="username">아이디</label>

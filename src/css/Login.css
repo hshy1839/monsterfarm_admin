@@ -12,16 +12,14 @@
   }
   
   /* 로그인 폼 제목 스타일 */
-  h1, h2 {
+  h1 {
     color: #333;
     font-family: 'Arial', sans-serif;
   }
 
-  h2 {
-    margin-top: 20%;
-  }
+ 
   .login-username-container {
-    margin-top: 10%;
+    margin-top: 20%;
   }
   /* 폼 레이블 스타일 */
   label {
