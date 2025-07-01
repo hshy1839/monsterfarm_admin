@@ -18,6 +18,7 @@ const SurveyClosedAnswerList = () => {
   const [estimateMap, setEstimateMap] = useState({});
   const [expandedIndex, setExpandedIndex] = useState(null);
   const [searchTrigger, setSearchTrigger] = useState(false);
+  const [yearList, setYearList] = useState(['all']);
 
   const itemsPerPage = 10;
   const navigate = useNavigate();
@@ -60,47 +61,54 @@ const SurveyClosedAnswerList = () => {
     setEstimateMap(newMap);
   };
 
-  const fetchAnswers = async () => {
-    try {
-      const token = localStorage.getItem('token');
-      const res = await axios.get('http://52.79.251.176:7777/api/answers', {
-        headers: { Authorization: `Bearer ${token}` },
+const fetchAnswers = async () => {
+  try {
+    const token = localStorage.getItem('token');
+    const res = await axios.get('http://52.79.251.176:7777/api/answers', {
+      headers: { Authorization: `Bearer ${token}` },
+    });
+
+    if (res.data.success && Array.isArray(res.data.answer)) {
+      const enriched = res.data.answer.map(answer => {
+        const regionAnswer = answer.answers?.find(ans => ans.selectedOption && /[시군도구]$/.test(ans.selectedOption.trim()));
+        const cityAnswer = answer.answers?.find(ans => ans.writtenAnswer && (ans.name?.includes('예산군') || /EX|\(예:/.test(ans.name)));
+        return {
+          ...answer,
+          region: regionAnswer?.selectedOption?.trim() || '미입력',
+          city: cityAnswer?.writtenAnswer?.trim() || '미입력',
+        };
       });
 
-      if (res.data.success && Array.isArray(res.data.answer)) {
-        const enriched = res.data.answer.map(answer => {
-          const regionAnswer = answer.answers?.find(ans => ans.selectedOption && /[시군도구]$/.test(ans.selectedOption.trim()));
-          const cityAnswer = answer.answers?.find(ans => ans.writtenAnswer && (ans.name?.includes('예산군') || /EX|\(예:/.test(ans.name)));
-          return {
-            ...answer,
-            region: regionAnswer?.selectedOption?.trim() || '미입력',
-            city: cityAnswer?.writtenAnswer?.trim() || '미입력',
-          };
-        });
+      const sorted = enriched.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
+      const filtered = sorted.filter(answer => new Date() - new Date(answer.createdAt) > 7 * 24 * 60 * 60 * 1000);
+      setAnswers(filtered);
+      fetchEstimates(filtered);
 
-        const sorted = enriched.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
-        const filtered = sorted.filter(answer => new Date() - new Date(answer.createdAt) > 7 * 24 * 60 * 60 * 1000);
-        setAnswers(filtered);
-        fetchEstimates(filtered);
+      // 연도 리스트 뽑기
+      const years = Array.from(
+        new Set(filtered.map(a => new Date(a.createdAt).getFullYear().toString()))
+      ).sort((a, b) => b - a);
+      setYearList(['all', ...years]);
 
-        const firstMap = {};
-        const grouped = {};
-        filtered.forEach(a => {
-          if (!grouped[a.userId]) grouped[a.userId] = [];
-          grouped[a.userId].push(a);
-        });
-        for (const [userId, list] of Object.entries(grouped)) {
-          firstMap[userId] = list.reduce((a, b) => new Date(a.createdAt) < new Date(b.createdAt) ? a : b)._id;
-        }
-        setFirstAnswerMap(firstMap);
-
-        const userIds = [...new Set(filtered.map(a => a.userId))];
-        userIds.forEach(uid => fetchUserName(uid));
+      const firstMap = {};
+      const grouped = {};
+      filtered.forEach(a => {
+        if (!grouped[a.userId]) grouped[a.userId] = [];
+        grouped[a.userId].push(a);
+      });
+      for (const [userId, list] of Object.entries(grouped)) {
+        firstMap[userId] = list.reduce((a, b) => new Date(a.createdAt) < new Date(b.createdAt) ? a : b)._id;
       }
-    } catch (e) {
-      console.error('응답 목록 불러오기 실패:', e);
+      setFirstAnswerMap(firstMap);
+
+      const userIds = [...new Set(filtered.map(a => a.userId))];
+      userIds.forEach(uid => fetchUserName(uid));
     }
-  };
+  } catch (e) {
+    console.error('응답 목록 불러오기 실패:', e);
+  }
+};
+
 
   useEffect(() => { fetchAnswers(); }, []);
 
@@ -151,7 +159,19 @@ const SurveyClosedAnswerList = () => {
   />
   <button  className="search-button" onClick={() => setSearchTrigger(true)}>검색</button>
 </div>
-
+<div className="year-filter" style={{ margin: '10px 0' }}>
+  <label htmlFor="yearFilter" style={{ marginRight: 8, fontWeight: 'bold' }}>연도</label>
+  <select
+    id="yearFilter"
+    value={yearFilter}
+    onChange={e => setYearFilter(e.target.value)}
+    style={{ padding: '4px 10px', borderRadius: 4, border: '1px solid #aaa', minWidth: 80 }}
+  >
+    {yearList.map(yr => (
+      <option value={yr} key={yr}>{yr === 'all' ? '전체' : yr + '년'}</option>
+    ))}
+  </select>
+</div>
           <table className="product-table">
             <thead>
               <tr>

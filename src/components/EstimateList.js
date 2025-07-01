@@ -56,6 +56,41 @@ const EstimateList = () => {
     fetchEstimates();
   }, []);
 
+   const handleApprove = async (id, currentApprovedStatus) => {
+    try {
+      const token = localStorage.getItem('token');
+      const newStatus = !currentApprovedStatus;
+      await axios.patch(
+        `http://52.79.251.176:7777/api/estimates/${id}/approve`,
+        { is_approved: newStatus },
+        { headers: { Authorization: `Bearer ${token}` } }
+      );
+
+      alert(newStatus ? '승인되었습니다.' : '승인 취소되었습니다.');
+      setEstimates(prev =>
+        prev.map(est => est._id === id ? { ...est, is_approved: newStatus } : est)
+      );
+    } catch (error) {
+      console.error('승인 상태 변경 오류:', error);
+      alert('승인 상태 변경 중 오류가 발생했습니다.');
+    }
+  };
+
+  const handleDelete = async (id) => {
+    if (!window.confirm('정말 삭제하시겠습니까?')) return;
+    try {
+      const token = localStorage.getItem('token');
+      await axios.delete(`http://52.79.251.176:7777/api/estimates/${id}`, {
+        headers: { Authorization: `Bearer ${token}` },
+      });
+      alert('삭제되었습니다.');
+      setEstimates(prev => prev.filter(est => est._id !== id));
+    } catch (error) {
+      console.error('삭제 오류:', error);
+      alert('삭제 중 오류가 발생했습니다.');
+    }
+  };
+
   const handleToggleResult = async (index, answerId, estimateCreatedAt) => {
     const now = new Date();
     const created = new Date(estimateCreatedAt);
@@ -134,6 +169,7 @@ const EstimateList = () => {
             <th>승인 여부</th>
             <th>상세보기</th>
             <th>결과보기</th>
+            {localStorage.getItem('user_type') === '1' && <th>액션</th>}
           </tr>
         </thead>
         <tbody>
@@ -158,10 +194,16 @@ const EstimateList = () => {
                     결과보기 ▼
                   </button>
                 </td>
+                 {localStorage.getItem('user_type') === '1' && (
+                <td>
+                  <button onClick={() => handleApprove(est._id, est.is_approved)}>승인</button>
+                  <button onClick={() => handleDelete(est._id)}>삭제</button>
+                </td>
+              )}
               </tr>
               {expandedIndex === index && resultMap[est.answerId?._id] && (
                 <tr>
-                  <td colSpan="12">
+                  <td colSpan={localStorage.getItem('user_type') === '1' ? 12 : 11}>
                     <div style={{ padding: '10px', background: '#f9f9f9' }}>
                       {resultMap[est.answerId._id].length === 0 ? (
                         <p>입찰 참여 내역이 없습니다.</p>
@@ -210,7 +252,9 @@ const EstimateList = () => {
                           ))
                       )}
                     </div>
+                    
                   </td>
+               
                 </tr>
               )}
             </React.Fragment>

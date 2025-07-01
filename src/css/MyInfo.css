@@ -1,0 +1,107 @@
+.myinfo-wrapper {
+  width: 80%;
+  height: 100vh;
+  margin-left: 20%;
+  background: #fff;
+  padding: 36px 28px;
+  border-radius: 16px;
+  box-shadow: 0 2px 12px rgba(0,0,0,0.09);
+  box-sizing: border-box;
+  justify-self: center;
+}
+
+.myinfo-title {
+  font-size: 2rem;
+  font-weight: 700;
+  text-align: center;
+  color: #273352;
+  margin-bottom: 32px;
+  letter-spacing: -1px;
+}
+
+.myinfo-table {
+  width: 100%;
+  border-collapse: separate;
+  border-spacing: 0;
+  background: #fafbfc;
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 1px 4px rgba(0,0,0,0.03);
+}
+
+.myinfo-label {
+  width: 140px;
+  background: #f4f6fa;
+  font-weight: 600;
+  text-align: left;
+  padding: 13px 14px;
+  border-bottom: 1px solid #e9eaf0;
+  color: #43485a;
+}
+
+.myinfo-value {
+  background: #fff;
+  padding: 13px 14px;
+  border-bottom: 1px solid #e9eaf0;
+  color: #23272f;
+  text-align: left;
+  word-break: break-all;
+}
+
+.myinfo-link {
+  color: #2070ee;
+  text-decoration: underline;
+  transition: color 0.2s;
+}
+.myinfo-link:hover {
+  color: #1459b7;
+}
+
+.myinfo-table tr:last-child .myinfo-label,
+.myinfo-table tr:last-child .myinfo-value {
+  border-bottom: none;
+}
+
+.myinfo-loading,
+.myinfo-error {
+  padding: 40px;
+  text-align: center;
+  color: #888;
+  font-size: 1.2rem;
+}
+.myinfo-btn-area {
+  text-align: right;
+  margin-top: 32px;
+}
+
+.myinfo-password-btn {
+  padding: 9px 20px;
+  border-radius: 6px;
+  background: #2070ee;
+  color: #fff;
+  font-weight: 600;
+  font-size: 1.02rem;
+  border: none;
+  cursor: pointer;
+  transition: background 0.18s;
+}
+
+.myinfo-password-btn:hover {
+  background: #1459b7;
+}
+
+@media (max-width: 700px) {
+  .myinfo-wrapper {
+    padding: 15px 2vw;
+    margin: 12px 0;
+    border-radius: 9px;
+  }
+  .myinfo-title {
+    font-size: 1.2rem;
+    margin-bottom: 18px;
+  }
+  .myinfo-label, .myinfo-value {
+    font-size: 0.98rem;
+    padding: 8px 7px;
+  }
+}

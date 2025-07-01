@@ -20,6 +20,8 @@ import EstimateList from './components/EstimateList';
 import EstimateListDetail from './components/EstimateListDetail';
 import ReservationList from './components/SurveyManagement/Reservation';
 import SurveyClosedAnswerList from './components/SurveyManagement/SurveyClosedAnswerList';
+import MyInfo from './components/Myinfo';
+import ChangePassword from './components/ChangePassword';
 
 function App() {
   const [loading, setLoading] = useState(true); // 초기 로딩 상태를 true로 설정
@@ -70,6 +72,8 @@ function App() {
         <Route path="/reservation/:id" element={<PrivateRoute><><Header /><ReservationList /></></PrivateRoute>} />
         <Route path="/reservation/list" element={<PrivateRoute><><Header /><ReservationList /></></PrivateRoute>} />
         <Route path="/reservation/detail/:id" element={<PrivateRoute><><Header /><EstimateListDetail /></></PrivateRoute>} />
+         <Route path="/userinfo" element={<PrivateRoute><><Header /><MyInfo /></></PrivateRoute>} />
+          <Route path="/change-password" element={<PrivateRoute><><Header /><ChangePassword /></></PrivateRoute>} />
       </Routes>
       
       )}

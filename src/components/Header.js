@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'; 
-import { faGauge, faUsers, faCalendarAlt, faSignOutAlt, faBars, faFile } from '@fortawesome/free-solid-svg-icons';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faGauge, faUsers, faCalendarAlt, faSignOutAlt, faBars, faFile, faUser, faPersonArrowDownToLine } from '@fortawesome/free-solid-svg-icons';
 import '../css/Header.css';
 import axios from 'axios';
 
@@ -70,31 +70,31 @@ const Header = () => {
           </Link>
 
           <div className='header-section2-item-employee-container'>
-  {userType === '2' ? (
-    // userType이 '2'인 경우: 바로 이동
-    <Link to="/survey/answerlists" onClick={handleLinkClick}>
-      <div className='header-section2-item-employee'>
-        <FontAwesomeIcon icon={faCalendarAlt} className='header-section2-item-employee-icon' />
-        <div className='header-section2-item-text'>입찰 참여</div>
-      </div>
-    </Link>
-  ) : (
-    // 관리자(userType === '1')일 경우: 드롭다운 메뉴
-    <>
-      <Link to="#" onClick={toggleMenu}>
-        <div className='header-section2-item-employee'>
-          <FontAwesomeIcon icon={faCalendarAlt} className='header-section2-item-employee-icon' />
-          <div className='header-section2-item-text'>입찰 참여</div>
-        </div>
-      </Link>
-      <div className={`submenu-employee ${isOpen ? 'open' : ''}`}>
-        <Link to="/survey" className='submenu-item-employee'>설문 문항</Link>
-        <Link to="/survey/answerlists" className='submenu-item-employee'>입찰 참여</Link>
-        <Link to="/survey/closed/answerlists" className='submenu-item-employee'>입찰마감설문</Link>
-      </div>
-    </>
-  )}
-</div>
+            {userType === '2' ? (
+              // userType이 '2'인 경우: 바로 이동
+              <Link to="/survey/answerlists" onClick={handleLinkClick}>
+                <div className='header-section2-item-employee'>
+                  <FontAwesomeIcon icon={faCalendarAlt} className='header-section2-item-employee-icon' />
+                  <div className='header-section2-item-text'>입찰 참여</div>
+                </div>
+              </Link>
+            ) : (
+              // 관리자(userType === '1')일 경우: 드롭다운 메뉴
+              <>
+                <Link to="#" onClick={toggleMenu}>
+                  <div className='header-section2-item-employee'>
+                    <FontAwesomeIcon icon={faCalendarAlt} className='header-section2-item-employee-icon' />
+                    <div className='header-section2-item-text'>입찰 참여</div>
+                  </div>
+                </Link>
+                <div className={`submenu-employee ${isOpen ? 'open' : ''}`}>
+                  <Link to="/survey" className='submenu-item-employee'>설문 문항</Link>
+                  <Link to="/survey/answerlists" className='submenu-item-employee'>입찰 참여</Link>
+                  <Link to="/survey/closed/answerlists" className='submenu-item-employee'>입찰마감설문</Link>
+                </div>
+              </>
+            )}
+          </div>
 
           {/* user_type이 '1'일 경우에만 고객 관리 탭 표시 */}
           {userType === '1' && (
@@ -106,26 +106,35 @@ const Header = () => {
             </Link>
           )}
           <Link to="/estimate/list" onClick={handleLinkClick}>
-              <div className='header-section2-item'>
-                <FontAwesomeIcon icon={faFile} className='header-section2-item-icon' />
-                <div className='header-section2-item-text'>견적서 확인</div>
-              </div>
-            </Link>
-            {userType === '1' && (
+            <div className='header-section2-item'>
+              <FontAwesomeIcon icon={faFile} className='header-section2-item-icon' />
+              <div className='header-section2-item-text'>견적서 확인</div>
+            </div>
+          </Link>
+          {userType === '1' && (
             <Link to="/reservation/list" onClick={handleLinkClick}>
               <div className='header-section2-item'>
                 <FontAwesomeIcon icon={faFile} className='header-section2-item-icon' />
                 <div className='header-section2-item-text'>상담 예약</div>
               </div>
             </Link>
-            )}
+          )}
+
         </div>
 
         <div className='header-section3'>
+          <Link to="/userinfo" onClick={handleLinkClick}>
+            <div className='header-section2-item'>
+              <FontAwesomeIcon icon={faUser} className='header-section2-item-icon' />
+              <div className='header-section2-item-text'>내 정보</div>
+            </div>
+          </Link>
           <div className='header-section3-item' onClick={handleLogout}>
             <FontAwesomeIcon icon={faSignOutAlt} className='header-section2-item-icon' />
             <div className='header-section2-item-text'>로그아웃</div>
+
           </div>
+
         </div>
       </div>
 
